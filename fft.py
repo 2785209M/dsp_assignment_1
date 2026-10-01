@@ -53,7 +53,7 @@ sample_rate_5cm, data_5cm, time_5cm = read_wav_file("Untitled.wav")
 plot_time_spectrum(time_5cm, data_5cm, 'time_spectrum.png')
 plot_frequency_spectrum(data_5cm[:len(data_5cm) // 2], sample_rate_5cm, "frequency_spectrum.png")
 plot_frequency_spectrum(data_5cm*np.hamming(len(data_5cm)), sample_rate_5cm, "frequency_spectrum_hamming.png")
-plot_frequency_spectrum_log(data_5cm[:len(data_5cm)] // 2, sample_rate_5cm, "frequency_spectrum_log.png")
+plot_frequency_spectrum_log(data_5cm[:len(data_5cm) // 2], sample_rate_5cm, "frequency_spectrum_log.png")
 plot_frequency_spectrum_log(data_5cm*np.hamming(len(data_5cm)), sample_rate_5cm, "frequency_spectrum_hamming_log.png")
 
 # TODO write a function to automate the creation of frequency plots
