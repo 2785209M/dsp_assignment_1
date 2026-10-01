@@ -4,57 +4,33 @@ from scipy.io import wavfile
 
 #open the wav file
 def read_wav_file(file):
-    # 1. load the wav file
     sample_rate, data = wavfile.read(file)
-
-    # 2. print sample rate
-    print(f'Sample rate: {sample_rate} Hz')
-
-    # 3. Calculate time axis in seconds
-    duration = len(data) / sample_rate
-    time = np.linspace(0, duration, len(data))
+    time = np.arange(len(data)) / sample_rate
 
     return sample_rate, data, time
 
-def calculate_fft(sample_rate, data):
-    #1. fft
-    freqdata = np.fft.fft(data)
+def plot_time_spectrum(time, data, title):
+    plt.plot(time, data)
+    plt.xlabel('Time (s)')
+    plt.ylabel('Amplitude')
+    plt.savefig(title, dpi=300, bbox_inches='tight')
+    plt.clf()
 
-    #2. Create Frequency Axis
-    freqs = np.linspace(0, sample_rate, len(freqdata))
+def plot_frequency_spectrum(data, sample_rate, title):
+    spectrum = np.abs(np.fft.fft(data))
+    frequencies = np.linspace(0, sample_rate, len(spectrum))
 
-    return freqs, freqdata
+    plt.plot(frequencies, spectrum)
+    plt.xlabel("Frequency (Hz)")
+    plt.ylabel("Magnitude")
+    plt.title(title)
+    plt.savefig(title, dpi=300, bbox_inches="tight")
+    plt.close()
 
 
-def calculate_Nyquist_fft(freqs, freqdata):
-    #1. cut mirrored half of data
-    freqdatanyquist = freqdata[:len(freqdata)//2]
-    #2. cut number of frequencies by half
-    freqsnyquist = freqs[:len(freqs)//2]
+sample_rate_5cm, data_5cm, time_5cm = read_wav_file("dsp_audio_5cm.wav")
 
-    return freqsnyquist, freqdatanyquist
+plot_time_spectrum(time_5cm, data_5cm, 'time_spectrum.png')
+plot_frequency_spectrum(data_5cm, sample_rate_5cm, "frequency_spectrum.png")
 
-sample_rate, data, time = read_wav_file('dsp_audio_1m.wav')
-freqs, freqdata = calculate_fft(sample_rate, data)
-freqsnyquist, freqdatanyquist = calculate_Nyquist_fft(freqs, freqdata)
-
-plt.plot(time, data)
-plt.xlabel('Time (s)')
-plt.ylabel('Amplitude')
-plt.title('Audio Signal Waveform')
-plt.savefig('audio_signal_waveform.png', dpi=300, bbox_inches='tight')
-plt.clf()
-
-plt.plot(freqs, np.abs(freqdata))
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('Magnitude')
-plt.title('Frequency Spectrum')
-plt.savefig('frequency_spectrum.png', dpi=300, bbox_inches='tight')
-plt.clf()
-
-plt.plot(freqsnyquist, np.abs(freqdatanyquist))
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('Magnitude')
-plt.title('Frequency Spectrum')
-plt.savefig('frequency_spectrum_nyquist.png', dpi=300, bbox_inches='tight')
-plt.clf()
+# TODO write a function to automate the creation of frequency plots
