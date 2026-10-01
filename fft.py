@@ -12,7 +12,6 @@ def read_wav_file(file):
     return sample_rate, data, time
 
 def plot_time_spectrum(time, data, title):
-    plt.figure(figsize=(12.8, 4.8))
     plt.plot(time, data)
     plt.xlabel('Time (s)')
     plt.ylabel('Amplitude')
@@ -32,7 +31,6 @@ def plot_frequency_spectrum(data, sample_rate, title):
     plt.close()
 
 def plot_frequency_spectrum_log(data, sample_rate, title):
-    plt.figure(figsize=(12.8, 4.8))
     spectrum = np.abs(np.fft.fft(data))
     spectrum = spectrum[:len(spectrum) // 2] # remove all frequencies > Nyquist frequency
     frequencies = np.linspace(0, sample_rate, len(spectrum))
@@ -43,7 +41,7 @@ def plot_frequency_spectrum_log(data, sample_rate, title):
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Magnitude")
     plt.title(title)
-    plt.savefig(title, dpi=600, bbox_inches="tight")
+    plt.savefig(title, dpi=300, bbox_inches="tight")
     plt.close()
 
 
