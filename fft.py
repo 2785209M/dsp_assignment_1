@@ -1,13 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
-import wave as wv
 
 #open the wav file
 def read_wav_file(file):
     sample_rate, data = wavfile.read(file)
     time = np.arange(len(data)) / sample_rate
-    data = data/32768
+    #data = data / 2**31
 
     return sample_rate, data, time
 
@@ -37,20 +36,20 @@ def plot_frequency_spectrum_log(data, sample_rate, title):
 
     spectrum = 20* np.log10(spectrum)
 
-    plt.semilogx(frequencies, spectrum)
+    plt.figure(figsize=(12, 6))
+    plt.semilogx(frequencies[8:], spectrum[8:])
+    plt.title("FFT Spectrum (Log-Log Scale)")
     plt.xlabel("Frequency (Hz)")
-    plt.ylabel("Magnitude")
-    plt.title(title)
+    plt.ylabel("Magnitude (dB)")
+    plt.grid(True, which="both", linestyle="--")
     plt.savefig(title, dpi=300, bbox_inches="tight")
     plt.close()
 
 
-sample_rate_5cm, data_5cm, time_5cm = read_wav_file("Untitled.wav")
+sample_rate_5cm, data_5cm, time_5cm = read_wav_file("ewan_01_5cm.wav")
 
-plot_time_spectrum(time_5cm, data_5cm, 'time_spectrum.png')
-plot_frequency_spectrum(data_5cm[:len(data_5cm) // 2], sample_rate_5cm, "frequency_spectrum.png")
-plot_frequency_spectrum(data_5cm*np.hamming(len(data_5cm)), sample_rate_5cm, "frequency_spectrum_hamming.png")
-plot_frequency_spectrum_log(data_5cm[:len(data_5cm) // 2], sample_rate_5cm, "frequency_spectrum_log.png")
-plot_frequency_spectrum_log(data_5cm*np.hamming(len(data_5cm)), sample_rate_5cm, "frequency_spectrum_hamming_log.png")
+plot_time_spectrum(time_5cm, data_5cm, 'time_spectrum.svg')
+plot_frequency_spectrum(data_5cm[:len(data_5cm) // 2], sample_rate_5cm, "frequency_spectrum.svg")
+plot_frequency_spectrum_log(data_5cm[:len(data_5cm) // 2], sample_rate_5cm, "frequency_spectrum_log.svg")
 
 # TODO write a function to automate the creation of frequency plots
