@@ -4,15 +4,16 @@ from scipy.io import wavfile
 
 # 1. Load the wave file
 sample_rate, data = wavfile.read("ewan_recordings/ewan_01_5cm.wav")
+data = data[:int(len(data)/4)]
 N = len(data)
 
 # 1. Fft
 freqData = np.fft.fft(data) / N
 
-# 2. Create Frequency Axis
+# 2. Nyquist theorem on fft data
 freqDataNyquist = 2 * freqData[:N // 2]
 
-# 3. Create Frequency Axis manually using df (CORRECT METHOD)
+# 3. Create Frequency Axis
 df = sample_rate / N
 freqsNyquist = np.arange(0, N // 2) * df
 
@@ -22,7 +23,7 @@ plt.plot(freqsNyquist, np.abs(freqDataNyquist))
 plt.title("FFT Spectrum")
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("")
-plt.savefig('ewan_recordings/fft_spectrum_ewan.svg', dpi=300, bbox_inches="tight")
+plt.savefig('ewan_recordings/fft_spectrum_silence_ewan_01_5cm.svg', dpi=300, bbox_inches="tight")
 
 # 4. Plot on log-log scale
 magnitude_db = 20 * np.log10(np.abs(freqDataNyquist))
@@ -33,5 +34,5 @@ plt.title("FFT Spectrum (Log-Log Scale)")
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("Magnitude (dB)")
 plt.grid(True, which="both", linestyle="--", alpha=0.7)
-plt.savefig('ewan_recordings/fft_loglog_spectrum_ewan.svg', dpi=300, bbox_inches="tight")
+plt.savefig('ewan_recordings/fft_loglog_spectrum_silence_ewan_01_5cm.svg', dpi=300, bbox_inches="tight")
 plt.close()
