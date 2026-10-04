@@ -11,7 +11,7 @@ def read_wav_file(file):
     sample_rate, data = wavfile.read(file)
     time = np.arange(len(data)) / sample_rate
     data = data/2**31
-    file_name = file
+    file_name = file[:-4]
 
     return sample_rate, data, time, file_name
 
@@ -23,7 +23,7 @@ def plot_time_spectrum(time, data, title, original_file_name = ""):
     plt.xlabel('Time (s)')
     plt.ylabel('Amplitude')
     plt.grid(True, which='both', linestyle='-', linewidth=0.5)
-    plt.savefig(IMAGES_DIR / f"{title}.png", dpi=300, bbox_inches='tight')
+    plt.savefig(IMAGES_DIR / title, dpi=300, bbox_inches='tight')
     plt.close()
 
 def plot_frequency_spectrum(data, sample_rate, title, original_file_name = ""):
@@ -39,7 +39,7 @@ def plot_frequency_spectrum(data, sample_rate, title, original_file_name = ""):
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Magnitude")
     plt.grid(True, which='both', linestyle='-', linewidth=0.5)
-    plt.savefig(IMAGES_DIR / f"{title}.png", dpi=300, bbox_inches="tight")
+    plt.savefig(IMAGES_DIR / title, dpi=300, bbox_inches="tight")
     plt.close()
 
 def plot_frequency_spectrum_dB(data, sample_rate, title, original_file_name = ""):
@@ -57,7 +57,7 @@ def plot_frequency_spectrum_dB(data, sample_rate, title, original_file_name = ""
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Magnitude (dB)")
     plt.grid(True, which='both', linestyle='-', linewidth=0.5)
-    plt.savefig(IMAGES_DIR / f"{title}.png", dpi=300, bbox_inches="tight")
+    plt.savefig(IMAGES_DIR / title, dpi=300, bbox_inches="tight")
     plt.close()
 
 
