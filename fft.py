@@ -7,7 +7,7 @@ import wave as wv
 def read_wav_file(file):
     sample_rate, data = wavfile.read(file)
     time = np.arange(len(data)) / sample_rate
-    data = data/32768
+    data = data/2**31
 
     return sample_rate, data, time
 
