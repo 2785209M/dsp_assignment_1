@@ -74,7 +74,7 @@ def plot_frequency_spectrum(dB, data, sample_rate, title, original_file_name = "
 
 
 if __name__ == "__main__":
-    file_paths = ["Untitled(1).wav", "ewan_01_1m.wav", "ewan_01_5cm.wav"]
+    file_paths = ["Untitled(1).wav", "ewan_recordings/ewan_01_1m.wav", "ewan_recordings/ewan_01_5cm.wav"]
 
     for file_path in file_paths:
         if Path(file_path).exists():
@@ -86,4 +86,4 @@ if __name__ == "__main__":
 
 
         else:
-            print(f"Error: {file_path} not found")  
+            print(f"Error: {file_path} not found") 
