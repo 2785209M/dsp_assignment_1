@@ -26,7 +26,6 @@ def plot_time_spectrum(time, data, title, original_file_name = ""):
     plt.close()
 
 def plot_frequency_spectrum(data, sample_rate, title, original_file_name = ""):
-    spectrum = data[:len(data_5cm) // 2]
     spectrum = np.abs(np.fft.fft(data))
     spectrum = spectrum[:len(spectrum) // 2] # remove all frequencies > Nyquist frequency
     frequencies = np.linspace(0, sample_rate, len(spectrum))
@@ -41,11 +40,13 @@ def plot_frequency_spectrum(data, sample_rate, title, original_file_name = ""):
     plt.close()
 
 def plot_frequency_spectrum_dB(data, sample_rate, title, original_file_name = ""):
-    spectrum = data[:len(data_5cm) // 2]
-    spectrum = np.abs(np.fft.fft(spectrum))
-    spectrum = spectrum[:len(spectrum) // 2] # remove all frequencies > Nyquist frequency
+    # convert spectrum data to frequency domain
+    spectrum = np.abs(np.fft.fft(data))
+    # remove all frequencies > Nyquist frequency
+    spectrum = spectrum[:len(spectrum) // 2]
     frequencies = np.linspace(0, sample_rate, len(spectrum))
 
+    # convert y-axis to decibels
     spectrum = 20* np.log10(spectrum)
 
     plt.figure(figsize=(20, 4))
