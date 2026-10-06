@@ -39,7 +39,7 @@ plt.ylabel("")
 plt.savefig('ewan_recordings/fft_spectrum_filtered_01_1m.svg', dpi=300, bbox_inches="tight")
 
 #take ifft
-xn = (np.fft.ifft(Xf))
+xn = (np.fft.ifft(Xf)).real
 
 # 4. Plot the waveform
 plt.figure(figsize=(10, 4))
@@ -50,3 +50,7 @@ plt.ylabel("Amplitude")
 plt.grid(True)
 plt.tight_layout()
 plt.savefig('ewan_recordings/time_spectrum_ifft_ewan_01_1m.svg', dpi=300, bbox_inches="tight")
+
+print(xn.dtype)
+wavfile.write("ewan_recordings/ewan_01_1m_filtered.wav", sample_rate, xn)
+
