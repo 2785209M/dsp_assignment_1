@@ -31,6 +31,8 @@ def read_wav_file(file):
         data = (data.astype(np.float32) - 128) / 128
     # if data is already np.float32, it is already normalized and sits in the range of [-1:1]
 
+    data = data[:int(len(data//4))]
+
     return sample_rate, data, time, file_name
 
 def plot_time_spectrum(time, data, title, original_file_name = ""):
@@ -41,8 +43,12 @@ def plot_time_spectrum(time, data, title, original_file_name = ""):
     plt.xlabel('Time (s)')
     plt.ylabel('Amplitude')
     plt.grid(True, which='both', linestyle='-', linewidth=0.5)
-    
-    plt.savefig(IMAGES_DIR / f"{title}_{original_file_name}.png", dpi=300, bbox_inches='tight')
+
+    output_name = f"{title}_{original_file_name}"
+    output_dir = IMAGES_DIR / original_file_name
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    plt.savefig(output_dir / f"{output_name}.png", dpi=300, bbox_inches="tight")
     plt.close()
 
 def plot_frequency_spectrum(dB, data, sample_rate, title, original_file_name = ""):
@@ -64,17 +70,23 @@ def plot_frequency_spectrum(dB, data, sample_rate, title, original_file_name = "
     plt.semilogx(frequencies, spectrum)
     plt.title(f"{title}_{original_file_name}")
     plt.xlabel("Frequency (Hz)")
+
     if dB:
         plt.ylabel("Magnitude (dB)")
     else:
         plt.ylabel("Magnitude")
+
     plt.grid(True, which='both', linestyle='-', linewidth=0.5)
-    plt.savefig(IMAGES_DIR / f"{title}_{original_file_name}.png", dpi=300, bbox_inches="tight")
+    output_name = f"{title}_{original_file_name}"
+    output_dir = IMAGES_DIR / original_file_name
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    plt.savefig(output_dir / f"{output_name}.png", dpi=300, bbox_inches="tight")
     plt.close()
 
 
 if __name__ == "__main__":
-    file_paths = ["Untitled(1).wav", "ewan_recordings/ewan_01_1m.wav", "ewan_recordings/ewan_01_5cm.wav"]
+    file_paths = ["peter-pipers-bicycle.wav"]
 
     for file_path in file_paths:
         if Path(file_path).exists():
