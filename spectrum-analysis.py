@@ -51,7 +51,7 @@ def plot_time_spectrum(time, data, title, original_file_name = ""):
     plt.savefig(output_dir / f"{output_name}.png", dpi=300, bbox_inches="tight")
     plt.close()
 
-def plot_frequency_spectrum(dB, data, sample_rate, title, original_file_name = ""):
+def plot_fft(dB, data, sample_rate, title, original_file_name = ""):
     N = len(data)
 
     # convert spectrum data to frequency domain, remove all frequencies > Nyquist frequency, and normalize the magnitudes
@@ -84,6 +84,8 @@ def plot_frequency_spectrum(dB, data, sample_rate, title, original_file_name = "
     plt.savefig(output_dir / f"{output_name}.png", dpi=300, bbox_inches="tight")
     plt.close()
 
+    return spectrum, frequencies
+
 
 if __name__ == "__main__":
     file_paths = ["peter-pipers-bicycle.wav"]
@@ -93,8 +95,8 @@ if __name__ == "__main__":
             sample_rate_5cm, data_5cm, time_5cm, file_name = read_wav_file(file_path)
     
             plot_time_spectrum(time_5cm, data_5cm, 'time_spectrum', file_name)
-            plot_frequency_spectrum(False, data_5cm, sample_rate_5cm, "frequency_spectrum", file_name)
-            plot_frequency_spectrum(True, data_5cm, sample_rate_5cm, "frequency_spectrum_log", file_name)
+            plot_fft(False, data_5cm, sample_rate_5cm, "frequency_spectrum", file_name)
+            plot_fft(True, data_5cm, sample_rate_5cm, "frequency_spectrum_log", file_name)
 
 
         else:
