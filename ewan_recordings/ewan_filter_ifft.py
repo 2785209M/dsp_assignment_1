@@ -12,10 +12,11 @@ time = np.linspace(0, duration, num=len(data))
 # 1. Fft
 Xf = (np.fft.fft(data))
 
-# 2. Filter out 5-15 Hz
+# 2. Filter out 1-80 Hz
 k1 = int(N / sample_rate * 1)
 k2 = int(N / sample_rate * 80)
 
+# and in mirrored fft
 k1_mirror = N - k1
 k2_mirror = N - k2
 
@@ -32,6 +33,7 @@ plt.xlabel("Frequency (Hz)")
 plt.ylabel("")
 plt.savefig('ewan_recordings/fft_spectrum_filtered_01_1m.svg', dpi=300, bbox_inches="tight")
 
+#take ifft
 xn = (np.fft.ifft(Xf))
 
 # 4. Plot the waveform
