@@ -13,14 +13,14 @@ time = np.linspace(0, duration, num=len(data))
 Xf = (np.fft.fft(data))
 
 # 2. Filter out 5-15 Hz
-k1 = int(N / sample_rate * 5)
-k2 = int(N / sample_rate * 15)
+k1 = int(N / sample_rate * 1)
+k2 = int(N / sample_rate * 80)
 
 k1_mirror = N - k1
 k2_mirror = N - k2
 
 Xf[k1 : k2+1] = 0
-Xf[k1_mirror : k2_mirror + 1] = 0
+Xf[k2_mirror : k1_mirror + 1] = 0
 
 df = sample_rate / N
 freqs = np.arange(0, N) * df
