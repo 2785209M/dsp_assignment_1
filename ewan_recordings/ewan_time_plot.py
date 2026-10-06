@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 
 # 1. Load the wave file
-sample_rate, data = wavfile.read("ewan_recordings/ewan_01_5cm.wav")
-data = data[:int(len(data)/4)]
+sample_rate, data = wavfile.read("ewan_recordings/ewan_01_1m.wav")
+data = data[:int(len(data)/6)]
 
 # 2. Print sample rate
 print("Sample rate =", sample_rate)
@@ -21,4 +21,4 @@ plt.xlabel("Time (seconds)")
 plt.ylabel("Amplitude")
 plt.grid(True)
 plt.tight_layout()
-plt.savefig('ewan_recordings/time_spectrum_silence_ewan_01_5cm.svg', dpi=300, bbox_inches="tight")
+plt.savefig('ewan_recordings/time_spectrum_silence_ewan_01_1m.svg', dpi=300, bbox_inches="tight")
