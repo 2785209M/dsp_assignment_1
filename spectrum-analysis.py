@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 from scipy.io import wavfile
+from matplotlib.ticker import AutoMinorLocator, MultipleLocator
 
 IMAGES_DIR = Path("images")
 IMAGES_DIR.mkdir(parents=True, exist_ok=True)
@@ -9,7 +10,7 @@ AUDIO_DIR = Path("audio_files")
 AUDIO_DIR.mkdir(parents=True, exist_ok=True)
 
 def read_wav_file(file):
-    # open the wav file
+    # extract the sample rate in Hz and data array from the wav file
     sample_rate, data = wavfile.read(file)
     file_name = Path(file).stem
 
@@ -30,9 +31,11 @@ def read_wav_file(file):
         data = (data.astype(np.float32) - 128) / 128
     # if data is already np.float32, it is already normalized and sits in the range of [-1:1]
 
-    time = np.arange(len(data)) / sample_rate
+    # Dividing number of elements in data by the sampling rate to get the total length in time of the sample
+    time_array = np.arange(len(data)) / sample_rate
 
-    return sample_rate, data, time, file_name
+    return sample_rate, data, time_array, file_name
+
 
 def plot_time_spectrum(time, data, original_file_name, sample_rate=None, title='time_spectrum', is_ifft=False):
     plt.figure(figsize=(20, 4))
@@ -44,27 +47,15 @@ def plot_time_spectrum(time, data, original_file_name, sample_rate=None, title='
     plt.grid(True, which='both', linestyle='-', linewidth=0.5)
 
     output_name = f"{title}_{original_file_name}"
-    output_dir = IMAGES_DIR / original_file_name
+    output_dir = IMAGES_DIR / original_file_name / "time_domain"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(output_dir / f"{output_name}.png", dpi=300, bbox_inches="tight")
     if is_ifft: wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
     plt.close()
 
-def plot_fft(dB, data, sample_rate, original_file_name):
-    N = len(data)
-    title = "fft"
 
-    # Compute full complex FFT first (needed for a proper IFFT later)
-    complex_spectrum = np.fft.fft(data)
-
-    # convert spectrum data to frequency domain, remove all frequencies > Nyquist frequency, and normalize the magnitudes
-    spectrum = np.abs(complex_spectrum)[:N // 2] / N
-    spectrum[1:-1] *= 2
-
-    # Create an array of len(spectrum) evenly spaced values from 0 to sample_rate Hz
-    frequency_resolution = sample_rate / N
-    frequencies = np.arange(0, N // 2) * frequency_resolution
+def plot_frequency_spectrum(frequencies, spectrum, original_file_name, title="", log=False, dB=False):
 
     if dB:
         # convert y-axis to decibels
@@ -72,44 +63,90 @@ def plot_fft(dB, data, sample_rate, original_file_name):
             spectrum = 20 * np.log10(spectrum)
         # Add log to the title
         title += "_log"
-
+        
     plt.figure(figsize=(20, 4))
-    plt.semilogx(frequencies, spectrum)
+
+    # plot the data
+    if log:
+        plt.semilogx(frequencies, spectrum)
+    else:
+        plt.plot(frequencies, spectrum)
+
+    # name the plot and the axes
     plt.title(f"{title}_{original_file_name}")
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Magnitude (dB)" if dB else "Magnitude")
+
+    # Set up the grid
+    # ax = plt.gca()
+    # ax.xaxis.set_minor_locator(AutoMinorLocator())
     plt.grid(True, which='both', linestyle='-', linewidth=0.5)
 
-    output_name = f"{title}_{original_file_name}"
-    output_dir = IMAGES_DIR / original_file_name
+    # name the file
+    if title:
+        output_name = f"{title}_{original_file_name}"
+    output_dir = IMAGES_DIR / original_file_name / "frequency_domain"
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    # save the plot
     plt.savefig(output_dir / f"{output_name}.png", dpi=300, bbox_inches="tight")
     plt.close()
 
+
+def calculate_fft(data, sample_rate):
+    N = len(data)
+
+    # Compute full complex FFT first (needed for a proper IFFT later)
+    complex_spectrum = np.fft.fft(data)
+
+    # convert spectrum data to frequency domain, remove all frequencies > Nyquist frequency, and normalize the magnitudes
+    nyquist_adjusted_spectrum = np.abs(complex_spectrum)[:N // 2] / N
+    nyquist_adjusted_spectrum[1:-1] *= 2
+
+    # Create an array of len(spectrum) evenly spaced values from 0 to sample_rate Hz
+    frequency_resolution = sample_rate / N
+    frequencies = np.arange(0, N // 2) * frequency_resolution
+
     # return full complex spectrum for use in the ifft
-    return complex_spectrum, N
+    return complex_spectrum, nyquist_adjusted_spectrum,frequencies, N
 
-def plot_ifft(complex_spectrum, N, sample_rate, time, original_file_name):
+
+def calculate_ifft(complex_spectrum, sample_rate, N):
     # copy the aray to avoid modifying by reference
-    filtered_spectrum = complex_spectrum.copy()
+    filtered_complex_spectrum = complex_spectrum.copy()
 
-    k1 = int(N / sample_rate * 1)
-    k2 = int(N / sample_rate * 80)      
-            
-    k1_mirror = N - k1      
-    k2_mirror = N - k2 
+    total_seconds = int(N / sample_rate)
+
+    # frequency index = total seconds * cycles per second
+    k1 = total_seconds * 1
+    k2 = total_seconds * 80
+    k3 = total_seconds * 10000
+    k4 = 5500 * total_seconds
+    k5 = 6000 * total_seconds
+    # TODO axes seem to be off in graph. setting k4 to 4500 and k5 to 500 removed frequencies from 3500 to 4000
+
+    k1_mirror = N - k1     
+    k2_mirror = N - k2
+    k3_mirror = N - k3
+    k4_mirror = N - k4
+    k5_mirror = N - k5
 
     # Zero out frequencies between 1-80Hz (high pass filter)
-    filtered_spectrum[k1 : k2+1] = 0       
-    filtered_spectrum[k2_mirror : k1_mirror + 1] = 0       
+    filtered_complex_spectrum[k1 : k2+1] = 0
+    filtered_complex_spectrum[k2_mirror : k1_mirror + 1] = 0
+    filtered_complex_spectrum[k3: ] = 0
+    filtered_complex_spectrum[N : k3_mirror] = 0
+    filtered_complex_spectrum[k4 : k5+1] = 0
+    filtered_complex_spectrum[k5_mirror : k4_mirror+1] = 0
+
+    # Calculate the normalized magnitude spectrum of the filtered data for plotting
+    filtered_nyquist_spectrum = np.abs(filtered_complex_spectrum)[:N // 2] / N
+    filtered_nyquist_spectrum[1:-1] *= 2
 
     # perform inverse fft to go back to the time domain
-    filtered_data = np.real(np.fft.ifft(filtered_spectrum))
+    filtered_data = np.real(np.fft.ifft(filtered_complex_spectrum))
 
-    plot_time_spectrum(time, filtered_data, original_file_name, sample_rate, "ifft_filtered", True)
-
-    return filtered_spectrum, filtered_data
+    return filtered_complex_spectrum, filtered_nyquist_spectrum,filtered_data
 
 
 if __name__ == "__main__":
@@ -117,11 +154,28 @@ if __name__ == "__main__":
 
     for file_path in file_paths:
         if Path(AUDIO_DIR/file_path).exists():
-            sample_rate, data, time, file_name = read_wav_file(AUDIO_DIR / file_path)
-            spectrum, N = plot_fft(False, data, sample_rate, file_name)
-            plot_time_spectrum(time, data, file_name)
-            plot_fft(True, data, sample_rate, file_name)
-            plot_ifft(spectrum, N, sample_rate, time, file_name)
+            # Extract Audio data from file
+            sample_rate, data, time_array, file_name = read_wav_file(AUDIO_DIR / file_path)
+            
+            # Calculate FFT and IFFT
+            complex_spectrum, nyquist_adjusted_spectrum, frequencies, N = calculate_fft(data, sample_rate)
+            filtered_complex_spectrum, filtered_nyquist_spectrum, filtered_data = calculate_ifft(complex_spectrum, sample_rate, N)
+
+            # Plot original Audio in Time Domain
+            plot_time_spectrum(time_array, data, file_name, title = "Original_Audio")
+            
+            # Plot Original Audio in Frequency Domain
+            plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, "FFT")
+            plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, "FFT", True, True)
+
+            # Plot Filtered Audio in Frequency Domain
+            plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT")
+            plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT", True, True)
+            
+            # Plot Filtered Audio in Time Domain
+            plot_time_spectrum(time_array, filtered_data, file_name, sample_rate, "Filtered_Audio", True)
+
+            print(f"Successfully processed {file_path}")
 
         else:
             print(f"Error: {file_path} not found") 
