@@ -30,12 +30,12 @@ def read_wav_file(file):
         data = (data.astype(np.float32) - 128) / 128
     # if data is already np.float32, it is already normalized and sits in the range of [-1:1]
 
-    data = data[:len(data) // 4]
+    data = data[:len(data)]
     time = np.arange(len(data)) / sample_rate
 
     return sample_rate, data, time, file_name
 
-def plot_time_spectrum(time, data, original_file_name, title='time_spectrum'):
+def plot_time_spectrum(time, data, original_file_name, sample_rate=None, title='time_spectrum', is_ifft=False):
     plt.figure(figsize=(20, 4))
     plt.plot(time, data)
 
@@ -49,6 +49,7 @@ def plot_time_spectrum(time, data, original_file_name, title='time_spectrum'):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(output_dir / f"{output_name}.png", dpi=300, bbox_inches="tight")
+    if is_ifft: wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
     plt.close()
 
 def plot_fft(dB, data, sample_rate, original_file_name):
@@ -107,7 +108,7 @@ def plot_ifft(complex_spectrum, N, sample_rate, time, original_file_name):
     # perform inverse fft to go back to the time domain
     filtered_data = np.real(np.fft.ifft(filtered_spectrum))
 
-    plot_time_spectrum(time, filtered_data, original_file_name, "ifft_filtered")
+    plot_time_spectrum(time, filtered_data, original_file_name, sample_rate, "ifft_filtered", True)
 
     return filtered_spectrum, filtered_data
 
