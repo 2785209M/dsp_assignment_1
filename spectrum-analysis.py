@@ -30,7 +30,6 @@ def read_wav_file(file):
         data = (data.astype(np.float32) - 128) / 128
     # if data is already np.float32, it is already normalized and sits in the range of [-1:1]
 
-    data = data[:len(data)]
     time = np.arange(len(data)) / sample_rate
 
     return sample_rate, data, time, file_name
