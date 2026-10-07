@@ -110,6 +110,36 @@ def calculate_fft(data, sample_rate):
     # return full complex spectrum for use in the ifft
     return complex_spectrum, nyquist_adjusted_spectrum,frequencies, N
 
+def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_width):
+    N = len(data)
+
+    #calculate the corresponding indices of f_lower and f_upper as well as the ends of the transition windows
+    k_lower = int(N / sample_rate * f_lower)
+    k_upper = int(N / sample_rate * f_upper)
+    k_trans_lower = int(N / sample_rate * (f_lower - transition_window_width))
+    k_trans_upper = int(N / sample_rate * (f_upper + transition_window_width))
+
+    # Zero out frequencies from f_lower to f_upper
+    data[k_lower : k_upper + 1] = 0
+    data[N - k_upper : N - k_lower + 1] = 0
+
+    # How many bins between the start and end of the transition windows
+    num_taper_bins_upper_transition = k_trans_upper - k_upper
+    num_taper_bins_lower_transition = k_lower - k_trans_lower
+
+    # Cosine window formula going smoothly from 0.0 to 1.0
+    upper_transition_window = 0.5 * (1 - np.cos(np.pi * np.linspace(0, 1, num_taper_bins_upper_transition)))
+    lower_transition_window = 0.5 * (1 - np.cos(np.pi * np.linspace(0, 1, num_taper_bins_lower_transition)))
+
+    # Apply transition to positive frequencies
+    data[k_upper : k_trans_upper] *= upper_transition_window
+    data[k_trans_lower : k_lower] *= lower_transition_window
+
+    # And mirrored zone ([::-1] reverse the transition window for the mirrored zone)
+    data[N - k_trans_upper : N - k_upper + 1] *= upper_transition_window[::-1]
+    data[N - k_lower : N - k_trans_lower + 1] *= lower_transition_window[::-1]
+
+    return data
 
 def calculate_ifft(complex_spectrum, sample_rate, N):
     # copy the aray to avoid modifying by reference
