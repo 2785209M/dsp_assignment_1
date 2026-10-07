@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 from scipy.io import wavfile
-from matplotlib.ticker import AutoMinorLocator, MultipleLocator
 
 IMAGES_DIR = Path("images")
 IMAGES_DIR.mkdir(parents=True, exist_ok=True)
@@ -189,8 +188,8 @@ if __name__ == "__main__":
 
             # Apply a filtering window to remove specific frequencies from the audio signal
             filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 1, 80, 20)
-            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 1000, 5000, 200)
-            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 6000, 99999, 20)
+            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 4000, 5000, 200)
+            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 9000, 10000, 20)
 
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum = get_nyquist_spectrum(filtered_complex_spectrum)
