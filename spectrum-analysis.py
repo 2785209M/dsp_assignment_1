@@ -110,14 +110,25 @@ def calculate_fft(data, sample_rate):
     # return full complex spectrum for use in the ifft
     return complex_spectrum, nyquist_adjusted_spectrum,frequencies, N
 
+def calculate_ifft(complex_spectrum):
+    # copy the aray to avoid modifying by reference
+    filtered_complex_spectrum = complex_spectrum.copy()
+
+    # perform inverse fft to go back to the time domain
+    filtered_data = np.real(np.fft.ifft(filtered_complex_spectrum))
+
+    return filtered_nyquist_spectrum,filtered_data
+
+
 def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_width):
     N = len(data)
+    total_time = N / sample_rate
 
     #calculate the corresponding indices of f_lower and f_upper as well as the ends of the transition windows
-    k_lower = int(N / sample_rate * f_lower)
-    k_upper = int(N / sample_rate * f_upper)
-    k_trans_lower = int(N / sample_rate * (f_lower - transition_window_width))
-    k_trans_upper = int(N / sample_rate * (f_upper + transition_window_width))
+    k_lower = int(total_time * f_lower)
+    k_upper = int(total_time * f_upper)
+    k_trans_lower = int(total_time * (f_lower - transition_window_width))
+    k_trans_upper = int(total_time * (f_upper + transition_window_width))
 
     # Zero out frequencies from f_lower to f_upper
     data[k_lower : k_upper + 1] = 0
@@ -142,43 +153,6 @@ def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_
 
     return data
 
-def calculate_ifft(complex_spectrum, sample_rate, N):
-    # copy the aray to avoid modifying by reference
-    filtered_complex_spectrum = complex_spectrum.copy()
-
-    total_seconds = int(N / sample_rate)
-
-    # frequency index = total seconds * cycles per second
-    k1 = total_seconds * 1
-    k2 = total_seconds * 80
-    k3 = total_seconds * 10000
-    k4 = 5500 * total_seconds
-    k5 = 6000 * total_seconds
-    # TODO axes seem to be off in graph. setting k4 to 4500 and k5 to 500 removed frequencies from 3500 to 4000
-
-    k1_mirror = N - k1     
-    k2_mirror = N - k2
-    k3_mirror = N - k3
-    k4_mirror = N - k4
-    k5_mirror = N - k5
-
-    # Zero out frequencies between 1-80Hz (high pass filter)
-    filtered_complex_spectrum[k1 : k2+1] = 0
-    filtered_complex_spectrum[k2_mirror : k1_mirror + 1] = 0
-    filtered_complex_spectrum[k3: ] = 0
-    filtered_complex_spectrum[N : k3_mirror] = 0
-    filtered_complex_spectrum[k4 : k5+1] = 0
-    filtered_complex_spectrum[k5_mirror : k4_mirror+1] = 0
-
-    # Calculate the normalized magnitude spectrum of the filtered data for plotting
-    filtered_nyquist_spectrum = np.abs(filtered_complex_spectrum)[:N // 2] / N
-    filtered_nyquist_spectrum[1:-1] *= 2
-
-    # perform inverse fft to go back to the time domain
-    filtered_data = np.real(np.fft.ifft(filtered_complex_spectrum))
-
-    return filtered_complex_spectrum, filtered_nyquist_spectrum,filtered_data
-
 
 if __name__ == "__main__":
     file_paths = ["peter-pipers-bicycle-5cm.wav"]
@@ -190,7 +164,6 @@ if __name__ == "__main__":
             
             # Calculate FFT and IFFT
             complex_spectrum, nyquist_adjusted_spectrum, frequencies, N = calculate_fft(data, sample_rate)
-            filtered_complex_spectrum, filtered_nyquist_spectrum, filtered_data = calculate_ifft(complex_spectrum, sample_rate, N)
 
             # Plot original Audio in Time Domain
             plot_time_spectrum(time_array, data, file_name, title = "Original_Audio")
@@ -198,6 +171,13 @@ if __name__ == "__main__":
             # Plot Original Audio in Frequency Domain
             plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, "FFT")
             plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, "FFT", True, True)
+
+            # Apply a filtering window to remove specific frequencies from the audio signal
+            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 1, 80, 20)
+            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 4000, 5000, 200)
+
+            # Revert the complex spectrum to time domain
+            filtered_nyquist_spectrum, filtered_data = calculate_ifft(complex_spectrum, sample_rate, N)
 
             # Plot Filtered Audio in Frequency Domain
             plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT")
