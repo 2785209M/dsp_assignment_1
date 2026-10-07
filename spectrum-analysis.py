@@ -125,6 +125,15 @@ def get_nyquist_spectrum(complex_spectrum):
 
 def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_width):
     N = len(data)
+    nyquist_freq = sample_rate / 2
+
+    if(f_lower < 0 or f_lower > nyquist_freq):
+        print(f"WARNING: lower bound frequency {f_lower} is outside of the accepted frequency range. Setting to zero.")
+        f_lower = 0
+    if(f_upper > nyquist_freq or f_upper < 0):
+        print(f"WARNING: upper bound frequency {f_upper} is outside of the accepted frequency range. Setting to sample_rate/2.")
+        f_upper = int(nyquist_freq)
+
     total_time = N / sample_rate
 
     #calculate the corresponding indices of f_lower and f_upper as well as the ends of the transition windows
@@ -180,7 +189,8 @@ if __name__ == "__main__":
 
             # Apply a filtering window to remove specific frequencies from the audio signal
             filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 1, 80, 20)
-            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 4000, 5000, 200)
+            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 1000, 5000, 200)
+            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 6000, 99999, 20)
 
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum = get_nyquist_spectrum(filtered_complex_spectrum)
