@@ -121,6 +121,7 @@ def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_
 
     # Zero out frequencies from f_lower to f_upper
     data[k_lower : k_upper + 1] = 0
+    # And in mirrored spectrum
     data[N - k_upper : N - k_lower + 1] = 0
 
     # How many bins between the start and end of the transition windows
@@ -135,7 +136,7 @@ def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_
     data[k_upper : k_trans_upper] *= upper_transition_window
     data[k_trans_lower : k_lower] *= lower_transition_window
 
-    # And mirrored zone ([::-1] reverse the transition window for the mirrored zone)
+    # And mirrored spectrum ([::-1] reverse the transition window for the mirrored spectrum)
     data[N - k_trans_upper : N - k_upper + 1] *= upper_transition_window[::-1]
     data[N - k_lower : N - k_trans_lower + 1] *= lower_transition_window[::-1]
 
