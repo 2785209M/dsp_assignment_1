@@ -50,6 +50,7 @@ def plot_time_spectrum(time, data, original_file_name, title='time_spectrum'):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
+    if is_ifft: wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
     plt.close()
 
 def generate_wav_file(data, sample_rate, original_file_name, title):
