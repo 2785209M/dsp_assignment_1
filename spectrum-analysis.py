@@ -196,7 +196,7 @@ def raised_cosine_boost(data, sample_rate, f_lower, f_upper, transition_window_w
     num_taper_bins_upper_transition = k_trans_upper - k_upper
     num_taper_bins_lower_transition = k_lower - k_trans_lower
 
-    # Cosine window formula going smoothly from 0.0 to 1.0
+    # Cosine window formula going smoothly from 1 to multiplier
     upper_transition_window = (0.5 * (1 - np.cos(np.pi * np.linspace(0, 1, num_taper_bins_upper_transition)))) + 1
     lower_transition_window = (0.5 * (1 - np.cos(np.pi * np.linspace(0, 1, num_taper_bins_lower_transition)))) + 1
 
