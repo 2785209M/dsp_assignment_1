@@ -49,7 +49,7 @@ def plot_time_spectrum(time, data, original_file_name, sample_rate=None, title='
     output_dir = IMAGES_DIR / original_file_name / "time_domain"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    plt.savefig(output_dir / f"{output_name}.png", dpi=300, bbox_inches="tight")
+    plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     if is_ifft: wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
     plt.close()
 
@@ -88,7 +88,7 @@ def plot_frequency_spectrum(frequencies, spectrum, original_file_name, title="",
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # save the plot
-    plt.savefig(output_dir / f"{output_name}.png", dpi=300, bbox_inches="tight")
+    plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     plt.close()
 
 
