@@ -3,8 +3,16 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 
 # 1. Load the wave file
-sample_rate, data = wavfile.read("ewan_recordings/ewan_01_5cm.wav")
+sample_rate, data = wavfile.read("audio_files/peter-pipers-bicycle-5cm.wav")
 #data = data[:int(len(data)/6)]
+
+if data.dtype == np.int16:
+        # 16-bit integer PCM
+    data = data.astype(np.float32) / 32768.0
+elif data.dtype == np.int32:
+        # 32-bit integer PCM
+    data = data.astype(np.float32) / 2147483648.0
+
 N = len(data)
 
 # 1. Fft
@@ -23,16 +31,16 @@ plt.plot(freqsNyquist, np.abs(freqDataNyquist))
 plt.title("FFT Spectrum")
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("")
-plt.savefig('ewan_recordings/fft_spectrum_ewan_01_5cm.svg', dpi=300, bbox_inches="tight")
+plt.savefig('ewan_recordings/fft-peter-pipers-5cm.svg', dpi=300, bbox_inches="tight")
 
 # 4. Plot on log-log scale
 magnitude_db = 20 * np.log10(np.abs(freqDataNyquist))
 
 plt.figure(figsize=(18, 6))
-plt.semilogx(freqsNyquist[4:], magnitude_db[4:])
+plt.semilogx(freqsNyquist[69:], magnitude_db[69:])
 plt.title("FFT Spectrum (Log-Log Scale)")
 plt.xlabel("Frequency (Hz)")
 plt.ylabel("Magnitude (dB)")
 plt.grid(True, which="both", linestyle="--", alpha=0.7)
-plt.savefig('ewan_recordings/fft_loglog_spectrum_ewan_01_5cm.svg', dpi=300, bbox_inches="tight")
+plt.savefig('ewan_recordings/fft-log-peter-pipers-5cm.svg', dpi=300, bbox_inches="tight")
 plt.close()
