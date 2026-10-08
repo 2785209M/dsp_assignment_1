@@ -36,7 +36,7 @@ def read_wav_file(file):
     return sample_rate, data, time_array, file_name
 
 
-def plot_time_spectrum(time, data, original_file_name, sample_rate=None, title='time_spectrum', is_ifft=False):
+def plot_time_spectrum(time, data, original_file_name, title='time_spectrum'):
     plt.figure(figsize=(20, 4))
     plt.plot(time, data)
 
@@ -52,6 +52,13 @@ def plot_time_spectrum(time, data, original_file_name, sample_rate=None, title='
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     if is_ifft: wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
     plt.close()
+
+def generate_wav_file(data, sample_rate, original_file_name, title):
+    output_name = f"{title}_{original_file_name}"
+    output_dir = IMAGES_DIR / original_file_name / "time_domain"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
 
 
 def plot_frequency_spectrum(frequencies, spectrum, original_file_name, title="", log=False, dB=False):
@@ -239,14 +246,15 @@ if __name__ == "__main__":
             filtered_nyquist_spectrum = get_nyquist_spectrum(filtered_complex_spectrum)
 
             # Revert the complex spectrum to time domain
-            filtered_data = calculate_ifft(complex_spectrum)
+            filtered_data = calculate_ifft(filtered_complex_spectrum)
 
             # Plot Filtered Audio in Frequency Domain
             plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT")
             plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT", True, True)
             
             # Plot Filtered Audio in Time Domain
-            plot_time_spectrum(time_array, filtered_data, file_name, sample_rate, "Filtered_Audio", True)
+            plot_time_spectrum(time_array, filtered_data, file_name, "Filtered_Audio")
+            generate_wav_file(filtered_data, sample_rate, file_name, "Filtered_Audio")
 
             print(f"Successfully processed {file_path}")
 
