@@ -35,7 +35,6 @@ def read_wav_file(file):
 
     return sample_rate, data, time_array, file_name
 
-
 def plot_time_spectrum(time, data, original_file_name, title='time_spectrum'):
     plt.figure(figsize=(20, 4))
     plt.plot(time, data)
@@ -58,7 +57,6 @@ def generate_wav_file(data, sample_rate, original_file_name, title):
     output_dir.mkdir(parents=True, exist_ok=True)
 
     wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
-
 
 def plot_frequency_spectrum(frequencies, spectrum, original_file_name, title="", log=False, dB=False):
 
@@ -97,7 +95,6 @@ def plot_frequency_spectrum(frequencies, spectrum, original_file_name, title="",
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     plt.close()
 
-
 def calculate_fft(data, sample_rate):
     N = len(data)
 
@@ -119,7 +116,6 @@ def calculate_ifft(complex_spectrum):
     filtered_data = np.real(np.fft.ifft(filtered_complex_spectrum))
 
     return filtered_data
-
 
 def get_nyquist_spectrum(complex_spectrum):
     # Calculate the normalized magnitude spectrum of the filtered data for plotting
