@@ -62,5 +62,6 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig('ewan_recordings/time_spectrum_ifft_ewan_01_5cm.svg', dpi=300, bbox_inches="tight")
 
+#write out wavefile
 wavfile.write("ewan_recordings/ewan_01_5cm_filtered.wav", sample_rate, xn)
 
