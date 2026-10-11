@@ -235,7 +235,6 @@ if __name__ == "__main__":
             filtered_complex_spectrum = complex_spectrum.copy()
             filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 20, 80, 20, 0)
             filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 5000, 6000, 1000, 0.2)
-            #filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 4000, 5000, 200)
             filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 10000, 20000, 1000, 0.01)
             filtered_complex_spectrum = raised_cosine_boost(complex_spectrum, sample_rate, 300, 800, 300, 2)
 
