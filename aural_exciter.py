@@ -75,7 +75,10 @@ if __name__ == "__main__":
 
             final_audio = au.normalise(final_audio)
 
+            #initial filtered audio normalised at the end to compare with the final_audio
             filtered_data = au.normalise(filtered_data)
+
+            # 3. Plots and wav files
 
             # Plot Filtered Audio in Frequency Domain
             au.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, "FFT_exciter", True, True)
