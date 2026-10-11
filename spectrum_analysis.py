@@ -35,7 +35,7 @@ def read_wav_file(file):
 
     return sample_rate, data, time_array, file_name
 
-def plot_time_spectrum(time, data, original_file_name, title='time_spectrum'):
+def plot_time_spectrum(time, data, sample_rate, original_file_name, title='time_spectrum'):
     plt.figure(figsize=(20, 4))
     plt.plot(time, data)
 
@@ -96,6 +96,11 @@ def plot_frequency_spectrum(frequencies, spectrum, original_file_name, title="",
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     plt.close()
 
+def normalise(signal):
+    max_val = np.max(np.abs(signal))
+    signal /= max_val
+    return signal
+
 def calculate_fft(data, sample_rate):
     N = len(data)
 
@@ -119,6 +124,7 @@ def calculate_ifft(complex_spectrum):
     return filtered_data
 
 def get_nyquist_spectrum(complex_spectrum):
+    N = len(complex_spectrum)
     # Calculate the normalized magnitude spectrum of the filtered data for plotting
     nyquist_spectrum = np.abs(complex_spectrum)[:N // 2] / N
     nyquist_spectrum[1:-1] *= 2
@@ -225,7 +231,7 @@ if __name__ == "__main__":
             nyquist_adjusted_spectrum = get_nyquist_spectrum(complex_spectrum)
 
             # Plot original Audio in Time Domain
-            plot_time_spectrum(time_array, data, file_name, title = "Original_Audio")
+            plot_time_spectrum(time_array, data, sample_rate, file_name, title = "Original_Audio")
             
             # Plot Original Audio in Frequency Domain
             plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, "FFT")
@@ -235,7 +241,7 @@ if __name__ == "__main__":
             filtered_complex_spectrum = complex_spectrum.copy()
             filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 20, 80, 20, 0)
             filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 5000, 6000, 1000, 0.2)
-            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 10000, 20000, 1000, 0.01)
+            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 10000, sample_rate/2, 1000, 0.01)
             filtered_complex_spectrum = raised_cosine_boost(complex_spectrum, sample_rate, 300, 800, 300, 2)
 
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
@@ -249,7 +255,7 @@ if __name__ == "__main__":
             plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT", True, True)
             
             # Plot Filtered Audio in Time Domain
-            plot_time_spectrum(time_array, filtered_data, file_name, "Filtered_Audio")
+            plot_time_spectrum(time_array, filtered_data, sample_rate, file_name, "Filtered_Audio")
             generate_wav_file(filtered_data, sample_rate, file_name, "Filtered_Audio")
 
             print(f"Successfully processed {file_path}")
