@@ -53,16 +53,17 @@ if __name__ == "__main__":
             upper_sidechain_signal = au.calculate_ifft(upper_sidechain)
 
             #scale upper sidechain to get nonlinearity from tanh
-            alpha = 400
+            alpha = 200
+            print("max before tanh = ", max(alpha*upper_sidechain_signal))
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
-            upper_sidechain_signal /= 400
+            upper_sidechain_signal /= 300
 
             #fft after nonlinearity applied
             exciter_spectrum, exciter_freqs, N = au.calculate_fft(upper_sidechain_signal, sample_rate)
 
             #filter for desired harmonics
-            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 5500, 200, 0)
-            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 6500, sample_rate/2, 500, 0)
+            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 5000, 200, 0)
+            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 7000, sample_rate/2, 500, 0)
             
             nyquist_exciter_spectrum = au.get_nyquist_spectrum(exciter_spectrum)
 
