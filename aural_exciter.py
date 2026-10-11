@@ -48,21 +48,21 @@ if __name__ == "__main__":
             #extract 800-6000Hz
             upper_sidechain = filtered_complex_spectrum.copy()
             upper_sidechain = au.raised_cosine_filter(upper_sidechain, sample_rate, 20, 800, 20, 0)
-            upper_sidechain = au.raised_cosine_filter(upper_sidechain, sample_rate, 6000, 20000, 200, 0)
+            upper_sidechain = au.raised_cosine_filter(upper_sidechain, sample_rate, 6000, sample_rate/2, 200, 0)
 
             upper_sidechain_signal = au.calculate_ifft(upper_sidechain)
             upper_sidechain_signal = au.normalise(upper_sidechain_signal)
 
             #scale upper sidechain to get nonlinearity from tanh
-            alpha = 3
+            alpha = 5
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
 
             #fft after nonlinearity applied
             exciter_spectrum, exciter_freqs, N = au.calculate_fft(upper_sidechain_signal, sample_rate)
 
             #filter for desired harmonics
-            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 5000, 200, 0)
-            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 7000, sample_rate/2, 500, 0)
+            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 4000, 200, 0)
+            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 8000, sample_rate/2 - 500, 500, 0)
             
             nyquist_exciter_spectrum = au.get_nyquist_spectrum(exciter_spectrum)
 
@@ -70,25 +70,58 @@ if __name__ == "__main__":
 
             exciter_harmonics = au.normalise(exciter_harmonics)
 
-            #mixer_gain_1 = 0.02
-            mixer_gain_1 = np.max(np.abs(filtered_data)) * 0.2
+            # 3. Big Bottom Sidechain
 
-            final_audio = filtered_data + mixer_gain_1 * exciter_harmonics
+            #extract 50-190Hz
+            bottom_sidechain = filtered_complex_spectrum.copy()
+            bottom_sidechain = au.raised_cosine_filter(bottom_sidechain, sample_rate, 20, 40, 20, 0)
+            bottom_sidechain = au.raised_cosine_filter(bottom_sidechain, sample_rate, 200, sample_rate/2 - 200, 200, 0)
+
+            bottom_sidechain_signal = au.calculate_ifft(bottom_sidechain)
+            bottom_sidechain_signal = au.normalise(bottom_sidechain_signal)
+
+            #scale upper sidechain to get nonlinearity from tanh
+            beta = 5
+            bottom_sidechain_signal = np.tanh(beta * bottom_sidechain_signal)
+
+            #fft after nonlinearity applied
+            bottom_spectrum, bottom_freqs, N = au.calculate_fft(bottom_sidechain_signal, sample_rate)
+
+            #filter for desired harmonics
+            bottom_spectrum = au.raised_cosine_filter(bottom_spectrum, sample_rate, 20, 200, 50, 0)
+            bottom_spectrum = au.raised_cosine_filter(bottom_spectrum, sample_rate, 600, 800, 50, 0)
+            
+            nyquist_exciter_spectrum = au.get_nyquist_spectrum(bottom_spectrum)
+
+            bottom_harmonics = au.calculate_ifft(bottom_spectrum)
+
+            bottom_harmonics = au.normalise(bottom_harmonics)
+
+            # 4. Mixing
+
+            #mixer_gain_1 = 0.02
+            mixer_gain_1 = np.max(np.abs(filtered_data)) * 0.1
+
+            mixer_gain_2 = np.max(np.abs(filtered_data)) * 0.1
+
+            final_audio = filtered_data + mixer_gain_1 * exciter_harmonics + mixer_gain_2 * bottom_harmonics
 
             final_audio = au.normalise(final_audio)
 
             #initial filtered audio normalised at the end to compare with the final_audio
             filtered_data = au.normalise(filtered_data)
 
-            # 3. Plots and wav files
+            # 5. Plots and wav files
 
             # Plot Filtered Audio in Frequency Domain
             au.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, "FFT_exciter", True, True)
+            au.plot_frequency_spectrum(bottom_freqs, nyquist_exciter_spectrum, file_name, "FFT_exciter", True, True)
             au.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT")
             au.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT", True, True)
             
             # Plot Filtered Audio in Time Domain
             au.plot_time_spectrum(time_array, exciter_harmonics, sample_rate, file_name, "exciter_harmonics")
+            au.plot_time_spectrum(time_array, bottom_harmonics, sample_rate, file_name, "bottom_harmonics")
             au.plot_time_spectrum(time_array, filtered_data, sample_rate, file_name, "Filtered_Audio")
             au.plot_time_spectrum(time_array, final_audio, sample_rate, file_name, "excited_audio")
 
