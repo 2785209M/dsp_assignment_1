@@ -33,7 +33,7 @@ if __name__ == "__main__":
             # Apply a filtering window to remove specific frequencies from the audio signal
             #clear up noise and sibilance before aural exciter
             filtered_complex_spectrum = complex_spectrum.copy()
-            filtered_complex_spectrum = au.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 80, 20, 0)
+            filtered_complex_spectrum = au.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 80, 200, 0)
             filtered_complex_spectrum = au.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 5000, 6000, 1000, 0.2)
             filtered_complex_spectrum = au.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 10000, 22000, 1000, 0)
 
@@ -47,8 +47,8 @@ if __name__ == "__main__":
 
             #extract 800-6000Hz
             upper_sidechain = filtered_complex_spectrum.copy()
-            upper_sidechain = au.raised_cosine_filter(upper_sidechain, sample_rate, 20, 800, 20, 0)
-            upper_sidechain = au.raised_cosine_filter(upper_sidechain, sample_rate, 6000, sample_rate/2, 200, 0)
+            upper_sidechain = au.raised_cosine_filter(upper_sidechain, sample_rate, 20, 800, 200, 0)
+            upper_sidechain = au.raised_cosine_filter(upper_sidechain, sample_rate, 6000, sample_rate/2 - 200, 200, 0)
 
             upper_sidechain_signal = au.calculate_ifft(upper_sidechain)
             upper_sidechain_signal = au.normalise(upper_sidechain_signal)
@@ -62,7 +62,7 @@ if __name__ == "__main__":
 
             #filter for desired harmonics
             exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 4000, 200, 0)
-            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 8000, sample_rate/2 - 500, 500, 0)
+            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 10000, sample_rate/2 - 200, 200, 0)
             
             nyquist_exciter_spectrum = au.get_nyquist_spectrum(exciter_spectrum)
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
             #extract 50-190Hz
             bottom_sidechain = filtered_complex_spectrum.copy()
             bottom_sidechain = au.raised_cosine_filter(bottom_sidechain, sample_rate, 20, 40, 20, 0)
-            bottom_sidechain = au.raised_cosine_filter(bottom_sidechain, sample_rate, 200, sample_rate/2 - 200, 200, 0)
+            bottom_sidechain = au.raised_cosine_filter(bottom_sidechain, sample_rate, 200, sample_rate/2 - 200, 20, 0)
 
             bottom_sidechain_signal = au.calculate_ifft(bottom_sidechain)
             bottom_sidechain_signal = au.normalise(bottom_sidechain_signal)
@@ -88,10 +88,10 @@ if __name__ == "__main__":
             bottom_spectrum, bottom_freqs, N = au.calculate_fft(bottom_sidechain_signal, sample_rate)
 
             #filter for desired harmonics
-            bottom_spectrum = au.raised_cosine_filter(bottom_spectrum, sample_rate, 20, 200, 50, 0)
-            bottom_spectrum = au.raised_cosine_filter(bottom_spectrum, sample_rate, 600, 800, 50, 0)
+            bottom_spectrum = au.raised_cosine_filter(bottom_spectrum, sample_rate, 20, 150, 200, 0)
+            bottom_spectrum = au.raised_cosine_filter(bottom_spectrum, sample_rate, 700, sample_rate/2 - 200, 200, 0)
             
-            nyquist_exciter_spectrum = au.get_nyquist_spectrum(bottom_spectrum)
+            nyquist_bottom_spectrum = au.get_nyquist_spectrum(bottom_spectrum)
 
             bottom_harmonics = au.calculate_ifft(bottom_spectrum)
 
@@ -99,7 +99,6 @@ if __name__ == "__main__":
 
             # 4. Mixing
 
-            #mixer_gain_1 = 0.02
             mixer_gain_1 = np.max(np.abs(filtered_data)) * 0.1
 
             mixer_gain_2 = np.max(np.abs(filtered_data)) * 0.1
@@ -108,6 +107,9 @@ if __name__ == "__main__":
 
             final_audio = au.normalise(final_audio)
 
+            final_spectrum, final_freqs, N = au.calculate_fft(final_audio, sample_rate) 
+            nyquist_final_spectrum = au.get_nyquist_spectrum(final_spectrum)
+
             #initial filtered audio normalised at the end to compare with the final_audio
             filtered_data = au.normalise(filtered_data)
 
@@ -115,9 +117,9 @@ if __name__ == "__main__":
 
             # Plot Filtered Audio in Frequency Domain
             au.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, "FFT_exciter", True, True)
-            au.plot_frequency_spectrum(bottom_freqs, nyquist_exciter_spectrum, file_name, "FFT_exciter", True, True)
-            au.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT")
+            au.plot_frequency_spectrum(bottom_freqs, nyquist_bottom_spectrum, file_name, "FFT_bottom", True, True)
             au.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT", True, True)
+            au.plot_frequency_spectrum(final_freqs, nyquist_final_spectrum, file_name, "FFT_final", True, True)
             
             # Plot Filtered Audio in Time Domain
             au.plot_time_spectrum(time_array, exciter_harmonics, sample_rate, file_name, "exciter_harmonics")
