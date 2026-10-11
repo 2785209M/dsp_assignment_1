@@ -51,12 +51,11 @@ if __name__ == "__main__":
             upper_sidechain = au.raised_cosine_filter(upper_sidechain, sample_rate, 6000, 20000, 200, 0)
 
             upper_sidechain_signal = au.calculate_ifft(upper_sidechain)
+            upper_sidechain_signal = au.normalise(upper_sidechain_signal)
 
             #scale upper sidechain to get nonlinearity from tanh
-            alpha = 200
-            print("max before tanh = ", max(alpha*upper_sidechain_signal))
+            alpha = 3
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
-            upper_sidechain_signal /= 300
 
             #fft after nonlinearity applied
             exciter_spectrum, exciter_freqs, N = au.calculate_fft(upper_sidechain_signal, sample_rate)
@@ -71,7 +70,9 @@ if __name__ == "__main__":
 
             exciter_harmonics = au.normalise(exciter_harmonics)
 
-            mixer_gain_1 = 0.005
+            #mixer_gain_1 = 0.02
+            mixer_gain_1 = np.max(np.abs(filtered_data)) * 0.15
+
             final_audio = filtered_data + mixer_gain_1 * exciter_harmonics
 
             final_audio = au.normalise(final_audio)
