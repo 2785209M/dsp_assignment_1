@@ -71,7 +71,7 @@ if __name__ == "__main__":
             exciter_harmonics = au.normalise(exciter_harmonics)
 
             #mixer_gain_1 = 0.02
-            mixer_gain_1 = np.max(np.abs(filtered_data)) * 0.15
+            mixer_gain_1 = np.max(np.abs(filtered_data)) * 0.2
 
             final_audio = filtered_data + mixer_gain_1 * exciter_harmonics
 
