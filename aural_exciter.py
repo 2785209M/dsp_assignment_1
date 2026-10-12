@@ -63,7 +63,8 @@ if __name__ == "__main__":
             #filter for desired harmonics
             exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 4000, 200, 0)
             exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 10000, sample_rate/2 - 200, 200, 0)
-            
+
+            #nyquist spectrum for plotting
             nyquist_exciter_spectrum = au.get_nyquist_spectrum(exciter_spectrum)
 
             exciter_harmonics = au.calculate_ifft(exciter_spectrum)
@@ -90,7 +91,8 @@ if __name__ == "__main__":
             #filter for desired harmonics
             bottom_spectrum = au.raised_cosine_filter(bottom_spectrum, sample_rate, 20, 150, 200, 0)
             bottom_spectrum = au.raised_cosine_filter(bottom_spectrum, sample_rate, 700, sample_rate/2 - 200, 200, 0)
-            
+
+            #nyquist spectrum for plotting
             nyquist_bottom_spectrum = au.get_nyquist_spectrum(bottom_spectrum)
 
             bottom_harmonics = au.calculate_ifft(bottom_spectrum)
@@ -99,6 +101,7 @@ if __name__ == "__main__":
 
             # 4. Mixing
 
+            #mixer gain scaled by some fraction of the original audio
             mixer_gain_1 = np.max(np.abs(filtered_data)) * 0.1
 
             mixer_gain_2 = np.max(np.abs(filtered_data)) * 0.1
