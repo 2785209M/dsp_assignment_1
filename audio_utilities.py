@@ -130,6 +130,7 @@ def get_nyquist_spectrum(complex_spectrum):
     nyquist_spectrum[1:-1] *= 2
     return nyquist_spectrum
 
+# TODO merge raised_cosine functions together
 def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_width, multiplier):
     N = len(data)
     nyquist_freq = sample_rate / 2
