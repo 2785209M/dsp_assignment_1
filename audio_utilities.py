@@ -35,7 +35,7 @@ def read_wav_file(file):
 
     return sample_rate, data, time_array, file_name
 
-def plot_time_spectrum(time, data, sample_rate, original_file_name, title='time_spectrum'):
+def plot_time_spectrum(time, data, sample_rate, original_file_name, output_directory, title='time_spectrum'):
     plt.figure(figsize=(20, 4))
     plt.plot(time, data)
 
@@ -45,21 +45,21 @@ def plot_time_spectrum(time, data, sample_rate, original_file_name, title='time_
     plt.grid(True, which='both', linestyle='-', linewidth=0.5)
 
     output_name = f"{title}_{original_file_name}"
-    output_dir = IMAGES_DIR / original_file_name / "time_domain"
+    output_dir = output_directory / original_file_name / "time_domain"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
     plt.close()
 
-def generate_wav_file(data, sample_rate, original_file_name, title):
+def generate_wav_file(data, sample_rate, original_file_name, output_directory, title):
     output_name = f"{title}_{original_file_name}"
-    output_dir = IMAGES_DIR / original_file_name / "time_domain"
+    output_dir = output_directory / original_file_name / "time_domain"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
 
-def plot_frequency_spectrum(frequencies, spectrum, original_file_name, title="", log=False, dB=False):
+def plot_frequency_spectrum(frequencies, spectrum, original_file_name, output_directory, title="",log=False, dB=False):
 
     if dB:
         # convert y-axis to decibels
@@ -89,7 +89,7 @@ def plot_frequency_spectrum(frequencies, spectrum, original_file_name, title="",
     # name the file
     if title:
         output_name = f"{title}_{original_file_name}"
-    output_dir = IMAGES_DIR / original_file_name / "frequency_domain"
+    output_dir = output_directory / original_file_name / "frequency_domain"
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # save the plot
@@ -231,11 +231,11 @@ if __name__ == "__main__":
             nyquist_adjusted_spectrum = get_nyquist_spectrum(complex_spectrum)
 
             # Plot original Audio in Time Domain
-            plot_time_spectrum(time_array, data, sample_rate, file_name, title = "Original_Audio")
+            plot_time_spectrum(time_array, data, sample_rate, file_name, IMAGES_DIR, title = "Original_Audio")
             
             # Plot Original Audio in Frequency Domain
-            plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, "FFT")
-            plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, "FFT", True, True)
+            plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, IMAGES_DIR, "FFT")
+            plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, IMAGES_DIR, "FFT", True, True)
 
             # Apply a filtering window to remove specific frequencies from the audio signal
             filtered_complex_spectrum = complex_spectrum.copy()
@@ -251,12 +251,12 @@ if __name__ == "__main__":
             filtered_data = calculate_ifft(filtered_complex_spectrum)
 
             # Plot Filtered Audio in Frequency Domain
-            plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT")
-            plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT", True, True)
+            plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, IMAGES_DIR, "IFFT")
+            plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, IMAGES_DIR, "IFFT", True, True)
             
             # Plot Filtered Audio in Time Domain
-            plot_time_spectrum(time_array, filtered_data, sample_rate, file_name, "Filtered_Audio")
-            generate_wav_file(filtered_data, sample_rate, file_name, "Filtered_Audio")
+            plot_time_spectrum(time_array, filtered_data, sample_rate, file_name, IMAGES_DIR, "Filtered_Audio")
+            generate_wav_file(filtered_data, sample_rate, file_name, IMAGES_DIR, "Filtered_Audio")
 
             print(f"Successfully processed {file_path}")
 
