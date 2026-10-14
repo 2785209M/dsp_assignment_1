@@ -35,7 +35,7 @@ def read_wav_file(file):
 
     return sample_rate, data, time_array, file_name
 
-def plot_time_spectrum(time, data, sample_rate, original_file_name, output_directory, title='time_spectrum'):
+def plot_time_spectrum(time, data, original_file_name, output_directory, title='time_spectrum'):
     plt.figure(figsize=(20, 4))
     plt.plot(time, data)
 
@@ -49,7 +49,6 @@ def plot_time_spectrum(time, data, sample_rate, original_file_name, output_direc
     output_dir.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
-    wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
     plt.close()
 
 def generate_wav_file(data, sample_rate, original_file_name, output_directory, title):
@@ -96,6 +95,7 @@ def plot_frequency_spectrum(frequencies, spectrum, original_file_name, output_di
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     plt.close()
 
+# TODO ASK BERND ABOUT THIS
 def normalise(signal):
     max_val = np.max(np.abs(signal))
     signal /= max_val
