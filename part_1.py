@@ -7,7 +7,7 @@ AUDIO_DIR = Path("audio_files")
 OUTPUT_DIR  = Path("part_1")
 
 # make sure you include the file name extension (.wav)
-file_path = "peter-piper-1m.wav"
+file_path = "Welcome_1m.wav"
 
 sample_rate, data, time_array, file_name = au.read_wav_file(f"{AUDIO_DIR}/{file_path}")
             

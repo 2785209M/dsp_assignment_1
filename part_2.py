@@ -7,7 +7,7 @@ AUDIO_DIR = Path("audio_files")
 OUTPUT_DIR  = Path("part_2")
 
 # make sure you include the file name extension (.wav)
-file_path = "peter-piper-1m.wav"
+file_path = "Welcome_5cm.wav"
 
 # Extract Audio data from file
 sample_rate, data, time_array, file_name = au.read_wav_file(AUDIO_DIR / file_path)
@@ -25,12 +25,8 @@ au.plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, OU
 
 # Apply a filtering window to remove specific frequencies from the audio signal
 filtered_complex_spectrum = complex_spectrum.copy()
-# filter out noise, loud plosives, and loud sibilance
-filtered_complex_spectrum = au.raised_cosine_filter(complex_spectrum, sample_rate, 20, 80, 20, 0)
-filtered_complex_spectrum = au.raised_cosine_filter(complex_spectrum, sample_rate, 5000, 6000, 1000, 0.2)
-filtered_complex_spectrum = au.raised_cosine_filter(complex_spectrum, sample_rate, 10000, sample_rate/2, 1000, 0.01)
-# boost bass frequencies
-filtered_complex_spectrum = au.raised_cosine_boost(complex_spectrum, sample_rate, 300, 800, 300, 2)
+filtered_complex_spectrum = au.raised_cosine_filter(complex_spectrum, sample_rate, 20, 200, 400, 0)
+filtered_complex_spectrum = au.raised_cosine_boost(complex_spectrum, sample_rate, 400, 800, 200, 2)
 
 # Obtain the nyquist adjusted filtered frequency spectrum for plotting
 filtered_nyquist_spectrum = au.get_nyquist_spectrum(filtered_complex_spectrum)

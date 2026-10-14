@@ -239,8 +239,8 @@ if __name__ == "__main__":
 
             # Apply a filtering window to remove specific frequencies from the audio signal
             filtered_complex_spectrum = complex_spectrum.copy()
-            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 20, 200, 00, 0)
-            #filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 200, 400, 20, 0.1)
+            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 20, 200, 400, 0)
+            filtered_complex_spectrum = raised_cosine_boost(complex_spectrum, sample_rate, 400, 800, 200, 2)
 
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum = get_nyquist_spectrum(filtered_complex_spectrum)
