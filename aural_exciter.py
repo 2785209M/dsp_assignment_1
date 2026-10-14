@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 from scipy.io import wavfile
-import spectrum_analysis as au #audio utilities
+import audio_utilities as au #audio utilities
 
 IMAGES_DIR = Path("images")
 IMAGES_DIR.mkdir(parents=True, exist_ok=True)
