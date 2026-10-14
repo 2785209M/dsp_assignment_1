@@ -4,8 +4,8 @@ from pathlib import Path
 from scipy.io import wavfile
 import audio_utilities as au #audio utilities
 
-IMAGES_DIR = Path("images")
-IMAGES_DIR.mkdir(parents=True, exist_ok=True)
+OUTPUT_DIR = Path("part_3")
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 AUDIO_DIR = Path("audio_files")
 AUDIO_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -24,11 +24,11 @@ if __name__ == "__main__":
             nyquist_adjusted_spectrum = au.get_nyquist_spectrum(complex_spectrum)
 
             # Plot original Audio in Time Domain
-            au.plot_time_spectrum(time_array, data, sample_rate, file_name, title = "Original_Audio")
+            au.plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
             
             # Plot Original Audio in Frequency Domain
-            au.plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, "FFT")
-            au.plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, "FFT", True, True)
+            au.plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT")
+            au.plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT", True, True)
 
             # Apply a filtering window to remove specific frequencies from the audio signal
             #clear up noise and sibilance before aural exciter
@@ -119,16 +119,16 @@ if __name__ == "__main__":
             # 5. Plots and wav files
 
             # Plot Filtered Audio in Frequency Domain
-            au.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, "FFT_exciter", True, True)
-            au.plot_frequency_spectrum(bottom_freqs, nyquist_bottom_spectrum, file_name, "FFT_bottom", True, True)
-            au.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, "IFFT", True, True)
-            au.plot_frequency_spectrum(final_freqs, nyquist_final_spectrum, file_name, "FFT_final", True, True)
+            au.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, OUTPUT_DIR, "FFT_exciter", True, True)
+            au.plot_frequency_spectrum(bottom_freqs, nyquist_bottom_spectrum, file_name, OUTPUT_DIR, "FFT_bottom", True, True)
+            au.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT", True, True)
+            au.plot_frequency_spectrum(final_freqs, nyquist_final_spectrum, file_name, OUTPUT_DIR, "FFT_final", True, True)
             
             # Plot Filtered Audio in Time Domain
-            au.plot_time_spectrum(time_array, exciter_harmonics, sample_rate, file_name, "exciter_harmonics")
-            au.plot_time_spectrum(time_array, bottom_harmonics, sample_rate, file_name, "bottom_harmonics")
-            au.plot_time_spectrum(time_array, filtered_data, sample_rate, file_name, "Filtered_Audio")
-            au.plot_time_spectrum(time_array, final_audio, sample_rate, file_name, "excited_audio")
+            au.plot_time_spectrum(time_array, exciter_harmonics, file_name, OUTPUT_DIR, "exciter_harmonics")
+            au.plot_time_spectrum(time_array, bottom_harmonics, file_name, OUTPUT_DIR, "bottom_harmonics")
+            au.plot_time_spectrum(time_array, filtered_data, file_name, OUTPUT_DIR, "Filtered_Audio")
+            au.plot_time_spectrum(time_array, final_audio, file_name, OUTPUT_DIR,"excited_audio")
 
             print(f"Successfully processed {file_path}")
 
