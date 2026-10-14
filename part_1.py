@@ -16,7 +16,7 @@ complex_spectrum, frequencies, N = au.calculate_fft(data, sample_rate)
 nyquist_adjusted_spectrum = au.get_nyquist_spectrum(complex_spectrum)
 
 # Plot original Audio in Time Domain
-au.plot_time_spectrum(time_array, data, sample_rate, file_name, OUTPUT_DIR, title = "Original_Audio")
+au.plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
 
 # Plot Original Audio in Frequency Domain
 au.plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT")

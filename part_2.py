@@ -4,7 +4,7 @@ from pathlib import Path
 # put the audio files you want to process into the "audio_files" directory
 # The output will appear in the "OUTPUT" directory
 AUDIO_DIR = Path("audio_files")
-OUTPUT_DIR  = Path("part_1")
+OUTPUT_DIR  = Path("part_2")
 
 # make sure you include the file name extension (.wav)
 file_path = "peter-piper-1m.wav"
@@ -17,7 +17,7 @@ complex_spectrum, frequencies, N = au.calculate_fft(data, sample_rate)
 nyquist_adjusted_spectrum = au.get_nyquist_spectrum(complex_spectrum)
 
 # Plot original Audio in Time Domain
-au.plot_time_spectrum(time_array, data, sample_rate, file_name, OUTPUT_DIR, title = "Original_Audio")
+au.plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
 
 # Plot Original Audio in Frequency Domain
 au.plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT")
@@ -43,7 +43,7 @@ au.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, OU
 au.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT", True, True)
 
 # Plot Filtered Audio in Time Domain
-au.plot_time_spectrum(time_array, filtered_data, sample_rate, file_name, OUTPUT_DIR, "Filtered_Audio")
+au.plot_time_spectrum(time_array, filtered_data, file_name, OUTPUT_DIR, "Filtered_Audio")
 au.generate_wav_file(filtered_data, sample_rate, file_name, OUTPUT_DIR, "Filtered_Audio")
 
 print(f"Successfully processed {file_path}")
