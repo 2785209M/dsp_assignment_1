@@ -219,7 +219,7 @@ def raised_cosine_boost(data, sample_rate, f_lower, f_upper, transition_window_w
     return data
 
 if __name__ == "__main__":
-    file_paths = ["peter-piper-1m.wav"]
+    file_paths = ["Welcome_5cm.wav"]
 
     for file_path in file_paths:
         if Path(AUDIO_DIR/file_path).exists():
@@ -239,10 +239,8 @@ if __name__ == "__main__":
 
             # Apply a filtering window to remove specific frequencies from the audio signal
             filtered_complex_spectrum = complex_spectrum.copy()
-            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 20, 80, 20, 0)
-            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 5000, 6000, 1000, 0.2)
-            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 10000, sample_rate/2, 1000, 0.01)
-            filtered_complex_spectrum = raised_cosine_boost(complex_spectrum, sample_rate, 300, 800, 300, 2)
+            filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 20, 200, 400, 0)
+            #filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 200, 400, 20, 0.1)
 
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum = get_nyquist_spectrum(filtered_complex_spectrum)
