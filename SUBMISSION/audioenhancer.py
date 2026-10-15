@@ -1,13 +1,19 @@
-import SUBMISSION.audioplot as ap # part 1 code
+import audioplot as ap # part 1 code
 import numpy as np
+from scipy.io import wavfile
 from pathlib import Path
 
 # put the audio files you want to process into the "audio_files" directory
 # The output will appear in the "OUTPUT" directory
 OUTPUT_DIR = Path("2785209M-2664680S/part_2")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-AUDIO_DIR = Path("audio_files")
-AUDIO_DIR.mkdir(parents=True, exist_ok=True)
+
+def generate_wav_file(data, sample_rate, original_file_name, output_directory, title):
+    output_name = f"{title}_{original_file_name}"
+    output_dir = output_directory / original_file_name / "time_domain"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
 
 def calculate_ifft(complex_spectrum):
     # copy the aray to avoid modifying by reference
@@ -17,7 +23,6 @@ def calculate_ifft(complex_spectrum):
     filtered_data = np.real(np.fft.ifft(filtered_complex_spectrum))
 
     return filtered_data
-
 
 # TODO merge raised_cosine functions together
 def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_width, multiplier):
@@ -112,7 +117,7 @@ def raised_cosine_boost(data, sample_rate, f_lower, f_upper, transition_window_w
 file_path = "Welcome_5cm.wav"
 
 # Extract Audio data from file
-sample_rate, data, time_array, file_name = ap.read_wav_file(AUDIO_DIR / file_path)
+sample_rate, data, time_array, file_name = ap.read_wav_file(file_path)
 
 # Calculate FFT and IFFT
 complex_spectrum, frequencies, N = ap.calculate_fft(data, sample_rate)

@@ -1,22 +1,20 @@
 import numpy as np
 from pathlib import Path
-import SUBMISSION.audioplot as ap # part 1 code
-import SUBMISSION.audioenhancer as ae # part 2 code
+import audioplot as ap # part 1 code
+import audioenhancer as ae # part 2 code
 
 OUTPUT_DIR = Path("2785209M-2664680S/part_3")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-AUDIO_DIR = Path("audio_files")
-AUDIO_DIR.mkdir(parents=True, exist_ok=True)
 
 if __name__ == "__main__":
     file_paths = ["exciter_Welcome_5cm.wav"]
 
     for file_path in file_paths:
-        if Path(AUDIO_DIR/file_path).exists():
+        if Path(file_path).exists():
             # 1. Remove noise from original signal
 
             # Extract Audio data from file
-            sample_rate, data, time_array, file_name = ap.read_wav_file(AUDIO_DIR / file_path)
+            sample_rate, data, time_array, file_name = ap.read_wav_file(file_path)
             
             # Calculate FFT and IFFT
             complex_spectrum, frequencies, N = ap.calculate_fft(data, sample_rate)
@@ -49,7 +47,6 @@ if __name__ == "__main__":
             upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 6000, sample_rate/2 - 200, 200, 0)
 
             upper_sidechain_signal = ap.calculate_ifft(upper_sidechain)
-            upper_sidechain_signal = ap.normalise(upper_sidechain_signal)
 
             #scale upper sidechain to get nonlinearity from tanh
             print(np.max(upper_sidechain_signal))
@@ -77,7 +74,6 @@ if __name__ == "__main__":
             # bottom_sidechain = ae.raised_cosine_filter(bottom_sidechain, sample_rate, 200, sample_rate/2 - 200, 20, 0)
 
             # bottom_sidechain_signal = ap.calculate_ifft(bottom_sidechain)
-            # bottom_sidechain_signal = ap.normalise(bottom_sidechain_signal)
 
             # #scale upper sidechain to get nonlinearity from tanh
             # beta = 5
@@ -95,7 +91,6 @@ if __name__ == "__main__":
 
             # bottom_harmonics = ap.calculate_ifft(bottom_spectrum)
 
-            # bottom_harmonics = ap.normalise(bottom_harmonics)
 
             # 4. Mixing
 

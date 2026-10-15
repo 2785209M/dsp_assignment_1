@@ -7,8 +7,6 @@ import numpy as np
 # The output will appear in the "images" directory
 OUTPUT_DIR = Path("2785209M-2664680S/part_1")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-AUDIO_DIR = Path("audio_files")
-AUDIO_DIR.mkdir(parents=True, exist_ok=True)
 
 def read_wav_file(file):
     # extract the sample rate in Hz and data array from the wav file
@@ -53,12 +51,6 @@ def plot_time_spectrum(time, data, original_file_name, output_directory, title='
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     plt.close()
 
-def generate_wav_file(data, sample_rate, original_file_name, output_directory, title):
-    output_name = f"{title}_{original_file_name}"
-    output_dir = output_directory / original_file_name / "time_domain"
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    wavfile.write(output_dir / f"{output_name}.wav", sample_rate, data.astype(np.float32))
 
 def plot_frequency_spectrum(frequencies, spectrum, original_file_name, output_directory, title="",log=False, dB=False):
 
@@ -97,12 +89,6 @@ def plot_frequency_spectrum(frequencies, spectrum, original_file_name, output_di
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     plt.close()
 
-# TODO ASK BERND ABOUT THIS
-def normalise(signal):
-    max_val = np.max(np.abs(signal))
-    signal /= max_val
-    return signal
-
 def calculate_fft(data, sample_rate):
     N = len(data)
 
@@ -124,10 +110,11 @@ def get_nyquist_spectrum(complex_spectrum):
     return nyquist_spectrum
 
 
-# make sure you include the file name extension (.wav)
-file_path = "Welcome_1m.wav"
+# Resolve the input relative to this script so it works regardless of the
+# directory from which the script is launched.
+file_path = Path(__file__).resolve().parent / "Welcome_1m.wav"
 
-sample_rate, data, time_array, file_name = read_wav_file(f"{AUDIO_DIR}/{file_path}")
+sample_rate, data, time_array, file_name = read_wav_file(file_path)
             
 # Calculate FFT
 complex_spectrum, frequencies, N = calculate_fft(data, sample_rate)
