@@ -119,8 +119,8 @@ if __name__ == "__main__":
             ap.plot_time_spectrum(time_array, final_audio, file_name, OUTPUT_DIR,"excited_audio")
 
             # Generate wav files
-            ap.generate_wav_file(final_audio, sample_rate, file_name, OUTPUT_DIR,"Final_Audio")
-            ap.generate_wav_file(filtered_data, sample_rate, file_name, OUTPUT_DIR,"Filtered_Audio")
+            ae.generate_wav_file(final_audio, sample_rate, file_name, OUTPUT_DIR,"Final_Audio")
+            ae.generate_wav_file(filtered_data, sample_rate, file_name, OUTPUT_DIR,"Filtered_Audio")
 
             print(f"Successfully processed {file_path}")
 
