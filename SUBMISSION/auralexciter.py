@@ -32,8 +32,10 @@ if __name__ == "__main__":
             # Apply a filtering window to remove specific frequencies from the audio signal
             #clear up noise and sibilance before aural exciter
             filtered_complex_spectrum = complex_spectrum.copy()
-            filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 200, 100, 0)
-            filtered_complex_spectrum = ae.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 300, 800, 100, 2)
+            filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 100, 20, 0)
+
+            #Big Bottom Sidechain
+            filtered_complex_spectrum = ae.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 100, 200, 20, 2)
         
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum, filtered_frequencies = ap.get_nyquist_spectrum(
@@ -47,14 +49,16 @@ if __name__ == "__main__":
 
             #extract 800-6000Hz
             upper_sidechain = filtered_complex_spectrum.copy()
-            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 800, 200, 0)
-            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 6000, sample_rate/2 - 200, 200, 0)
+            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 2000, 20, 0)
+            #upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 2100, sample_rate/2 - 20, 20, 0)
 
             upper_sidechain_signal = ae.calculate_ifft(upper_sidechain)
 
             #scale upper sidechain to get nonlinearity from tanh
+            upper_sidechain_signal /= np.max(np.abs(upper_sidechain_signal))
             print(np.max(upper_sidechain_signal))
             print(np.min(upper_sidechain_signal))
+            
             alpha = 2
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
 
@@ -62,8 +66,8 @@ if __name__ == "__main__":
             exciter_spectrum = ap.calculate_fft(upper_sidechain_signal)
 
             #filter for desired harmonics
-            exciter_spectrum = ae.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 4000, 500, 0)
-            exciter_spectrum = ae.raised_cosine_filter(exciter_spectrum, sample_rate, 8000, sample_rate/2 - 200, 500, 0)
+            exciter_spectrum = ae.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 1000, 200, 0)
+            exciter_spectrum = ae.raised_cosine_filter(exciter_spectrum, sample_rate, 10000, sample_rate/2 - 200, 200, 0)
 
             #nyquist spectrum for plotting
             nyquist_exciter_spectrum, exciter_freqs = ap.get_nyquist_spectrum(
@@ -72,39 +76,12 @@ if __name__ == "__main__":
 
             exciter_harmonics = ae.calculate_ifft(exciter_spectrum)
 
-            # 3. Big Bottom Sidechain
-
-            # #extract 50-190Hz
-            # bottom_sidechain = filtered_complex_spectrum.copy()
-            # bottom_sidechain = ae.raised_cosine_filter(bottom_sidechain, sample_rate, 20, 40, 20, 0)
-            # bottom_sidechain = ae.raised_cosine_filter(bottom_sidechain, sample_rate, 200, sample_rate/2 - 200, 20, 0)
-
-
-            # #scale upper sidechain to get nonlinearity from tanh
-            # beta = 5
-            # bottom_sidechain_signal = np.tanh(beta * bottom_sidechain_signal)
-
-            # #fft after nonlinearity applied
-
-            # #filter for desired harmonics
-            # bottom_spectrum = ae.raised_cosine_filter(bottom_spectrum, sample_rate, 20, 150, 200, 0)
-            # bottom_spectrum = ae.raised_cosine_filter(bottom_spectrum, sample_rate, 700, sample_rate/2 - 200, 200, 0)
-
-            # #nyquist spectrum for plotting
-            # nyquist_bottom_spectrum, bottom_freqs = ap.get_nyquist_spectrum(
-            #     bottom_spectrum, sample_rate
-            # )
-
-
-
             # 4. Mixing
 
             #mixer gain scaled by some fraction of the original audio
-            mixer_gain_1 = 0.15
+            mixer_gain_1 = 0.05
 
-            # mixer_gain_2 = np.max(np.abs(filtered_data)) * 0.1
-
-            final_audio = filtered_data + mixer_gain_1 * exciter_harmonics# + mixer_gain_2 * bottom_harmonics
+            final_audio = filtered_data + mixer_gain_1 * exciter_harmonics
 
             final_spectrum = ap.calculate_fft(final_audio)
             nyquist_final_spectrum, final_freqs = ap.get_nyquist_spectrum(
@@ -115,13 +92,11 @@ if __name__ == "__main__":
 
             # Plot Filtered Audio in Frequency Domain
             ap.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, OUTPUT_DIR, "FFT_exciter", True, True)
-            #ap.plot_frequency_spectrum(bottom_freqs, nyquist_bottom_spectrum, file_name, OUTPUT_DIR, "FFT_bottom", True, True)
-            ap.plot_frequency_spectrum(filtered_frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT", True, True)
+            ap.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT", True, True)
             ap.plot_frequency_spectrum(final_freqs, nyquist_final_spectrum, file_name, OUTPUT_DIR, "FFT_final", True, True)
             
             # Plot Filtered Audio in Time Domain
             ap.plot_time_spectrum(time_array, exciter_harmonics, file_name, OUTPUT_DIR, "exciter_harmonics")
-            #ap.plot_time_spectrum(time_array, bottom_harmonics, file_name, OUTPUT_DIR, "bottom_harmonics")
             ap.plot_time_spectrum(time_array, filtered_data, file_name, OUTPUT_DIR, "Filtered_Audio")
             ap.plot_time_spectrum(time_array, final_audio, file_name, OUTPUT_DIR,"excited_audio")
 
