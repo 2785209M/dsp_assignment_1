@@ -33,8 +33,8 @@ if __name__ == "__main__":
             # Apply a filtering window to remove specific frequencies from the audio signal
             #clear up noise and sibilance before aural exciter
             filtered_complex_spectrum = complex_spectrum.copy()
-            filtered_complex_spectrum = au.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 200, 400, 0)
-            filtered_complex_spectrum = au.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 400, 800, 200, 2)
+            filtered_complex_spectrum = au.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 200, 100, 0)
+            filtered_complex_spectrum = au.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 300, 800, 100, 2)
         
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum = au.get_nyquist_spectrum(filtered_complex_spectrum)
@@ -55,15 +55,15 @@ if __name__ == "__main__":
             #scale upper sidechain to get nonlinearity from tanh
             print(np.max(upper_sidechain_signal))
             print(np.min(upper_sidechain_signal))
-            alpha = 3
+            alpha = 2
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
 
             #fft after nonlinearity applied
             exciter_spectrum, exciter_freqs, N = au.calculate_fft(upper_sidechain_signal, sample_rate)
 
             #filter for desired harmonics
-            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 4000, 200, 0)
-            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 10000, sample_rate/2 - 200, 200, 0)
+            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 4000, 500, 0)
+            exciter_spectrum = au.raised_cosine_filter(exciter_spectrum, sample_rate, 8000, sample_rate/2 - 200, 500, 0)
 
             #nyquist spectrum for plotting
             nyquist_exciter_spectrum = au.get_nyquist_spectrum(exciter_spectrum)
@@ -101,19 +101,14 @@ if __name__ == "__main__":
             # 4. Mixing
 
             #mixer gain scaled by some fraction of the original audio
-            mixer_gain_1 = np.max(np.abs(filtered_data)) * 0.4
+            mixer_gain_1 = 0.15
 
             # mixer_gain_2 = np.max(np.abs(filtered_data)) * 0.1
 
             final_audio = filtered_data + mixer_gain_1 * exciter_harmonics# + mixer_gain_2 * bottom_harmonics
 
-            final_audio = (final_audio)
-
             final_spectrum, final_freqs, N = au.calculate_fft(final_audio, sample_rate) 
             nyquist_final_spectrum = au.get_nyquist_spectrum(final_spectrum)
-
-            #initial filtered audio normalised at the end to compare with the final_audio
-            filtered_data = (filtered_data)
 
             # 5. Plots and wav files
 
