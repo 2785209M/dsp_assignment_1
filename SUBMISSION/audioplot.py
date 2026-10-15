@@ -52,6 +52,28 @@ def plot_time_spectrum(time, data, original_file_name, output_directory, title='
     plt.close()
 
 
+def calculate_fft(data):
+    # Compute full complex FFT first (needed for a proper IFFT later)
+    complex_spectrum = np.fft.fft(data)
+
+    # return full complex spectrum for use in the ifft
+    return complex_spectrum
+
+
+def get_nyquist_spectrum(complex_spectrum, sample_rate):
+    N = len(complex_spectrum)
+
+    # Calculate the normalized magnitude spectrum of the filtered data for plotting
+    nyquist_spectrum = np.abs(complex_spectrum)[:N // 2] / N
+    nyquist_spectrum[1:] *= 2
+
+    # Create an array of len(spectrum) evenly spaced values from 0 to sample_rate Hz
+    frequency_resolution = sample_rate / N
+    nyquist_frequencies = np.arange(0, N // 2) * frequency_resolution
+
+    return nyquist_spectrum, nyquist_frequencies
+
+
 def plot_frequency_spectrum(frequencies, spectrum, original_file_name, output_directory, title="",log=False, dB=False):
 
     if dB:
@@ -89,26 +111,6 @@ def plot_frequency_spectrum(frequencies, spectrum, original_file_name, output_di
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     plt.close()
 
-def calculate_fft(data, sample_rate):
-    N = len(data)
-
-    # Compute full complex FFT first (needed for a proper IFFT later)
-    complex_spectrum = np.fft.fft(data)
-
-    # Create an array of len(spectrum) evenly spaced values from 0 to sample_rate Hz
-    frequency_resolution = sample_rate / N
-    frequencies = np.arange(0, N // 2) * frequency_resolution
-
-    # return full complex spectrum for use in the ifft
-    return complex_spectrum, frequencies
-
-def get_nyquist_spectrum(complex_spectrum):
-    N = len(complex_spectrum)
-    # Calculate the normalized magnitude spectrum of the filtered data for plotting
-    nyquist_spectrum = np.abs(complex_spectrum)[:N // 2] / N
-    nyquist_spectrum[1:-1] *= 2
-    return nyquist_spectrum
-
 
 # Resolve the input relative to this script so it works regardless of the
 # directory from which the script is launched.
@@ -116,15 +118,17 @@ file_path = Path(__file__).resolve().parent / "Welcome_1m.wav"
 
 sample_rate, data, time_array, file_name = read_wav_file(file_path)
             
-# Calculate FFT
-complex_spectrum, frequencies = calculate_fft(data, sample_rate)
-nyquist_adjusted_spectrum = get_nyquist_spectrum(complex_spectrum)
+# Calculate FFT and the positive-frequency spectrum used for plotting
+complex_spectrum = calculate_fft(data)
+nyquist_adjusted_spectrum, nyquist_frequencies = get_nyquist_spectrum(
+    complex_spectrum, sample_rate
+)
 
 # Plot original Audio in Time Domain
 plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
 
 # Plot Original Audio in Frequency Domain
-plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT")
-plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT", True, True)
+plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT")
+plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT", True, True)
 
 print(f"Successfully processed {file_path}")

@@ -16,9 +16,11 @@ if __name__ == "__main__":
             # Extract Audio data from file
             sample_rate, data, time_array, file_name = ap.read_wav_file(file_path)
             
-            # Calculate FFT and IFFT
-            complex_spectrum, frequencies = ap.calculate_fft(data, sample_rate)
-            nyquist_adjusted_spectrum = ap.get_nyquist_spectrum(complex_spectrum)
+            # Calculate FFT and the positive-frequency spectrum used for plotting
+            complex_spectrum = ap.calculate_fft(data)
+            nyquist_adjusted_spectrum, frequencies = ap.get_nyquist_spectrum(
+                complex_spectrum, sample_rate
+            )
 
             # Plot original Audio in Time Domain
             ap.plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
@@ -34,7 +36,9 @@ if __name__ == "__main__":
             filtered_complex_spectrum = ae.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 300, 800, 100, 2)
         
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
-            filtered_nyquist_spectrum = ap.get_nyquist_spectrum(filtered_complex_spectrum)
+            filtered_nyquist_spectrum, filtered_frequencies = ap.get_nyquist_spectrum(
+                filtered_complex_spectrum, sample_rate
+            )
 
             # Revert the complex spectrum to time domain
             filtered_data = ae.calculate_ifft(filtered_complex_spectrum)
@@ -55,14 +59,16 @@ if __name__ == "__main__":
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
 
             #fft after nonlinearity applied
-            exciter_spectrum, exciter_freqs = ap.calculate_fft(upper_sidechain_signal, sample_rate)
+            exciter_spectrum = ap.calculate_fft(upper_sidechain_signal)
 
             #filter for desired harmonics
             exciter_spectrum = ae.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 4000, 500, 0)
             exciter_spectrum = ae.raised_cosine_filter(exciter_spectrum, sample_rate, 8000, sample_rate/2 - 200, 500, 0)
 
             #nyquist spectrum for plotting
-            nyquist_exciter_spectrum = ap.get_nyquist_spectrum(exciter_spectrum)
+            nyquist_exciter_spectrum, exciter_freqs = ap.get_nyquist_spectrum(
+                exciter_spectrum, sample_rate
+            )
 
             exciter_harmonics = ae.calculate_ifft(exciter_spectrum)
 
@@ -85,7 +91,9 @@ if __name__ == "__main__":
             # bottom_spectrum = ae.raised_cosine_filter(bottom_spectrum, sample_rate, 700, sample_rate/2 - 200, 200, 0)
 
             # #nyquist spectrum for plotting
-            # nyquist_bottom_spectrum = ap.get_nyquist_spectrum(bottom_spectrum)
+            # nyquist_bottom_spectrum, bottom_freqs = ap.get_nyquist_spectrum(
+            #     bottom_spectrum, sample_rate
+            # )
 
 
 
@@ -98,15 +106,17 @@ if __name__ == "__main__":
 
             final_audio = filtered_data + mixer_gain_1 * exciter_harmonics# + mixer_gain_2 * bottom_harmonics
 
-            final_spectrum, final_freqs = ap.calculate_fft(final_audio, sample_rate) 
-            nyquist_final_spectrum = ap.get_nyquist_spectrum(final_spectrum)
+            final_spectrum = ap.calculate_fft(final_audio)
+            nyquist_final_spectrum, final_freqs = ap.get_nyquist_spectrum(
+                final_spectrum, sample_rate
+            )
 
             # 5. Plots and wav files
 
             # Plot Filtered Audio in Frequency Domain
             ap.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, OUTPUT_DIR, "FFT_exciter", True, True)
             #ap.plot_frequency_spectrum(bottom_freqs, nyquist_bottom_spectrum, file_name, OUTPUT_DIR, "FFT_bottom", True, True)
-            ap.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT", True, True)
+            ap.plot_frequency_spectrum(filtered_frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT", True, True)
             ap.plot_frequency_spectrum(final_freqs, nyquist_final_spectrum, file_name, OUTPUT_DIR, "FFT_final", True, True)
             
             # Plot Filtered Audio in Time Domain

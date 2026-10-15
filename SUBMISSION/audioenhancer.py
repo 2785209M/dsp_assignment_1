@@ -119,9 +119,11 @@ file_path = "Welcome_5cm.wav"
 # Extract Audio data from file
 sample_rate, data, time_array, file_name = ap.read_wav_file(file_path)
 
-# Calculate FFT and IFFT
-complex_spectrum, frequencies = ap.calculate_fft(data, sample_rate)
-nyquist_adjusted_spectrum = ap.get_nyquist_spectrum(complex_spectrum)
+# Calculate FFT and the positive-frequency spectrum used for plotting
+complex_spectrum = ap.calculate_fft(data)
+nyquist_adjusted_spectrum, frequencies = ap.get_nyquist_spectrum(
+    complex_spectrum, sample_rate
+)
 
 # Plot original Audio in Time Domain
 ap.plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
@@ -140,14 +142,16 @@ filtered_complex_spectrum = raised_cosine_boost(complex_spectrum, sample_rate, 4
 #filtered_complex_spectrum = raised_cosine_boost(complex_spectrum, sample_rate, 120, 400, 20, 2)
 
 # Obtain the nyquist adjusted filtered frequency spectrum for plotting
-filtered_nyquist_spectrum = ap.get_nyquist_spectrum(filtered_complex_spectrum)
+filtered_nyquist_spectrum, filtered_frequencies = ap.get_nyquist_spectrum(
+    filtered_complex_spectrum, sample_rate
+)
 
 # Revert the complex spectrum to time domain
 filtered_data = calculate_ifft(filtered_complex_spectrum)
 
 # Plot Filtered Audio in Frequency Domain
-ap.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT")
-ap.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT", True, True)
+ap.plot_frequency_spectrum(filtered_frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT")
+ap.plot_frequency_spectrum(filtered_frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT", True, True)
 
 # Plot Filtered Audio in Time Domain
 ap.plot_time_spectrum(time_array, filtered_data, file_name, OUTPUT_DIR, "Filtered_Audio")
