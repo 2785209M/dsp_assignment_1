@@ -17,7 +17,7 @@ if __name__ == "__main__":
             sample_rate, data, time_array, file_name = ap.read_wav_file(file_path)
             
             # Calculate FFT and IFFT
-            complex_spectrum, frequencies, N = ap.calculate_fft(data, sample_rate)
+            complex_spectrum, frequencies = ap.calculate_fft(data, sample_rate)
             nyquist_adjusted_spectrum = ap.get_nyquist_spectrum(complex_spectrum)
 
             # Plot original Audio in Time Domain
@@ -55,7 +55,7 @@ if __name__ == "__main__":
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
 
             #fft after nonlinearity applied
-            exciter_spectrum, exciter_freqs, N = ap.calculate_fft(upper_sidechain_signal, sample_rate)
+            exciter_spectrum, exciter_freqs = ap.calculate_fft(upper_sidechain_signal, sample_rate)
 
             #filter for desired harmonics
             exciter_spectrum = ae.raised_cosine_filter(exciter_spectrum, sample_rate, 0, 4000, 500, 0)
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
             final_audio = filtered_data + mixer_gain_1 * exciter_harmonics# + mixer_gain_2 * bottom_harmonics
 
-            final_spectrum, final_freqs, N = ap.calculate_fft(final_audio, sample_rate) 
+            final_spectrum, final_freqs = ap.calculate_fft(final_audio, sample_rate) 
             nyquist_final_spectrum = ap.get_nyquist_spectrum(final_spectrum)
 
             # 5. Plots and wav files

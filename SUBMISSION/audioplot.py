@@ -100,7 +100,7 @@ def calculate_fft(data, sample_rate):
     frequencies = np.arange(0, N // 2) * frequency_resolution
 
     # return full complex spectrum for use in the ifft
-    return complex_spectrum, frequencies, N
+    return complex_spectrum, frequencies
 
 def get_nyquist_spectrum(complex_spectrum):
     N = len(complex_spectrum)
@@ -117,7 +117,7 @@ file_path = Path(__file__).resolve().parent / "Welcome_1m.wav"
 sample_rate, data, time_array, file_name = read_wav_file(file_path)
             
 # Calculate FFT
-complex_spectrum, frequencies, N = calculate_fft(data, sample_rate)
+complex_spectrum, frequencies = calculate_fft(data, sample_rate)
 nyquist_adjusted_spectrum = get_nyquist_spectrum(complex_spectrum)
 
 # Plot original Audio in Time Domain

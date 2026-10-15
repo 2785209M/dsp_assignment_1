@@ -120,7 +120,7 @@ file_path = "Welcome_5cm.wav"
 sample_rate, data, time_array, file_name = ap.read_wav_file(file_path)
 
 # Calculate FFT and IFFT
-complex_spectrum, frequencies, N = ap.calculate_fft(data, sample_rate)
+complex_spectrum, frequencies = ap.calculate_fft(data, sample_rate)
 nyquist_adjusted_spectrum = ap.get_nyquist_spectrum(complex_spectrum)
 
 # Plot original Audio in Time Domain
