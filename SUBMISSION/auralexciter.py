@@ -56,9 +56,7 @@ if __name__ == "__main__":
 
             #scale upper sidechain to get nonlinearity from tanh
             upper_sidechain_signal /= np.max(np.abs(upper_sidechain_signal))
-            print(np.max(upper_sidechain_signal))
-            print(np.min(upper_sidechain_signal))
-            
+    
             alpha = 2
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
 
