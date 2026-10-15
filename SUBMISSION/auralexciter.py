@@ -7,7 +7,7 @@ OUTPUT_DIR = Path("2785209M-2664680S/part_3")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 if __name__ == "__main__":
-    file_paths = ["exciter_Welcome_5cm.wav"]
+    file_paths = ["Welcome_5cm.wav"]
 
     for file_path in file_paths:
         if Path(file_path).exists():
@@ -37,7 +37,7 @@ if __name__ == "__main__":
             filtered_nyquist_spectrum = ap.get_nyquist_spectrum(filtered_complex_spectrum)
 
             # Revert the complex spectrum to time domain
-            filtered_data = ap.calculate_ifft(filtered_complex_spectrum)
+            filtered_data = ae.calculate_ifft(filtered_complex_spectrum)
 
             # 2. Aural Exciter Sidechain
 
@@ -46,7 +46,7 @@ if __name__ == "__main__":
             upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 800, 200, 0)
             upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 6000, sample_rate/2 - 200, 200, 0)
 
-            upper_sidechain_signal = ap.calculate_ifft(upper_sidechain)
+            upper_sidechain_signal = ae.calculate_ifft(upper_sidechain)
 
             #scale upper sidechain to get nonlinearity from tanh
             print(np.max(upper_sidechain_signal))
@@ -64,7 +64,7 @@ if __name__ == "__main__":
             #nyquist spectrum for plotting
             nyquist_exciter_spectrum = ap.get_nyquist_spectrum(exciter_spectrum)
 
-            exciter_harmonics = ap.calculate_ifft(exciter_spectrum)
+            exciter_harmonics = ae.calculate_ifft(exciter_spectrum)
 
             # 3. Big Bottom Sidechain
 
@@ -73,14 +73,12 @@ if __name__ == "__main__":
             # bottom_sidechain = ae.raised_cosine_filter(bottom_sidechain, sample_rate, 20, 40, 20, 0)
             # bottom_sidechain = ae.raised_cosine_filter(bottom_sidechain, sample_rate, 200, sample_rate/2 - 200, 20, 0)
 
-            # bottom_sidechain_signal = ap.calculate_ifft(bottom_sidechain)
 
             # #scale upper sidechain to get nonlinearity from tanh
             # beta = 5
             # bottom_sidechain_signal = np.tanh(beta * bottom_sidechain_signal)
 
             # #fft after nonlinearity applied
-            # bottom_spectrum, bottom_freqs, N = ap.calculate_fft(bottom_sidechain_signal, sample_rate)
 
             # #filter for desired harmonics
             # bottom_spectrum = ae.raised_cosine_filter(bottom_spectrum, sample_rate, 20, 150, 200, 0)
@@ -89,7 +87,6 @@ if __name__ == "__main__":
             # #nyquist spectrum for plotting
             # nyquist_bottom_spectrum = ap.get_nyquist_spectrum(bottom_spectrum)
 
-            # bottom_harmonics = ap.calculate_ifft(bottom_spectrum)
 
 
             # 4. Mixing

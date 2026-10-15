@@ -151,6 +151,6 @@ ap.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, OU
 
 # Plot Filtered Audio in Time Domain
 ap.plot_time_spectrum(time_array, filtered_data, file_name, OUTPUT_DIR, "Filtered_Audio")
-ap.generate_wav_file(filtered_data, sample_rate, file_name, OUTPUT_DIR, "Filtered_Audio")
+generate_wav_file(filtered_data, sample_rate, file_name, OUTPUT_DIR, "Filtered_Audio")
 
 print(f"Successfully processed {file_path}")
