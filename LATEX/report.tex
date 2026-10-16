@@ -1,4 +1,3 @@
-% !TEX root = main.tex
 \documentclass{article}
 \usepackage[margin=0.5in, left=0.5in, right=0.5in]{geometry}
 \usepackage{amsmath}
@@ -10,7 +9,74 @@
 \begin{document}
 \maketitle
 
-\section{Introduction}
-We have developed a software to transform, filter, and modulate audio signals utilising fourier transforms and the frequency domain.
+\section*{Introduction}
+We have developed software to transform, filter, and modulate audio signals utilising Fourier transforms and the frequency domain.
+
+\section{Audio Plot}
+Part 1 contains the logic for obtaining the frequency domain representation of our audio signal, involving reading the WAV file, normalizing the signal, performing a fast Fourier transform, and plotting the graphs in the time and frequency domains.
+
+\subsection{Read\_WAV\_file}
+Reads and normalizes the data to a range of [-1:1] (32-bit float). If a stereo input is given, only the first channel is stored. Automatically handles 8-bit unsigned, 16-bit signed, and 32-bit signed integer PCM.
+\begin{description}
+    \item[Inputs:]
+    \item[Outputs:] 
+\end{description}
+
+\subsection{Plot\_time\_spectrum}
+Plots a time domain graph representing the audio signal (amplitude against time).
+\begin{description}
+    \item[Inputs:]
+    \item[Outputs:] 
+\end{description}
+
+\subsection{calculate\_fft}
+Takes a fast Fourier transform of the audio data, producing a full complex spectrum.
+\begin{description}
+    \item[Inputs:]
+    \item[Outputs:] 
+\end{description}
+
+\subsection{get\_nyquist\_spectrum}
+Produces a Nyquist-adjusted frequency spectrum for plotting purposes.
+\begin{description}
+    \item[Inputs:]
+    \item[Outputs:] 
+\end{description}
+
+\subsection{plot\_frequency\_spectrum}
+Plots a frequency domain \.svg plot in the specified output folder, with optional logarithmic scaling.
+\begin{description}
+    \item[Inputs:]
+    \item[Outputs:] 
+\end{description}
+
+
+\section{Audio Enhancer}
+Frequency filtering and amplification.
+
+\subsection{generate\_wav\_file}
+Generates a WAV file, designed to process frequency-modulated audio data.
+\begin{description}
+    \item[Inputs:]
+    \item[Outputs:] 
+\end{description}
+
+\subsection{calculate\_ifft}
+Performs an inverse Fourier transform on the input complex spectrum to produce a reconstructed time-domain data array.
+\begin{description}
+    \item[Inputs:]
+    \item[Outputs:] 
+\end{description}
+
+\subsection{raised\_cosine\_filter}
+Uses a cosine smoothing method to modulate/remove specific frequency ranges without producing ringing from Gibb's phenomenon.
+\begin{description}
+    \item[Inputs:]
+    \item[Outputs:] 
+\end{description}
+
+
+\section{Part 3 \- Aural Exciter}
+Utilizes the functions from the previous two parts of the assignment to digitally recreate an aural exciter circuit as given in the specification. An inverse tan function is applied to a high-pass filtered portion of the input signal to introduce non-linear harmonic distortion. These newly generated high-frequency harmonics are then scaled and mixed back with the original dry audio, enhancing the signal's brightness and presence.
 
 \end{document}
