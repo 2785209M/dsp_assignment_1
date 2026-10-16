@@ -31,8 +31,7 @@ if __name__ == "__main__":
 
             # Apply a filtering window to remove specific frequencies from the audio signal
             #clear up noise and sibilance before aural exciter
-            filtered_complex_spectrum = complex_spectrum.copy()
-            filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 100, 20, 0)
+            filtered_complex_spectrum = ae.raised_cosine_filter(complex_spectrum, sample_rate, 20, 100, 20, 0)
 
             #Big Bottom Sidechain
             filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 100, 200, 20, 2)
@@ -48,8 +47,7 @@ if __name__ == "__main__":
             # 2. Aural Exciter Sidechain
 
             #extract 800-6000Hz
-            upper_sidechain = filtered_complex_spectrum.copy()
-            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 2000, 20, 0)
+            upper_sidechain = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 2000, 20, 0)
             #upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 2100, sample_rate/2 - 20, 20, 0)
 
             upper_sidechain_signal = ae.calculate_ifft(upper_sidechain)

@@ -25,10 +25,11 @@ def calculate_ifft(complex_spectrum):
     return data
 
 # TODO merge raised_cosine functions together
-def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_width, multiplier):
+def raised_cosine_filter(complex_spectrum, sample_rate, f_lower, f_upper, transition_window_width, multiplier):
     if(multiplier == 1 or multiplier < 0): return
 
-    N = len(data)
+    modulated_spectrum = complex_spectrum.copy()
+    N = len(modulated_spectrum)
     nyquist_freq = sample_rate / 2
 
     if(f_lower < 0 or f_lower > nyquist_freq):
@@ -49,9 +50,9 @@ def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_
     k_trans_upper = int(min(N // 2, (total_time * (f_upper + transition_window_width))))
 
     # Zero out frequencies from f_lower to f_upper
-    data[k_lower : k_upper + 1] *= multiplier
+    modulated_spectrum[k_lower : k_upper + 1] *= multiplier
     # And in mirrored spectrum
-    data[N - k_upper : N - k_lower + 1] *= multiplier
+    modulated_spectrum[N - k_upper : N - k_lower + 1] *= multiplier
 
     # How many bins between the start and end of the transition windows
     num_taper_bins_upper_transition = k_trans_upper - k_upper
@@ -64,12 +65,12 @@ def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_
         lower_transition_window = multiplier + (1 - multiplier) * 0.5 * (1 - np.cos(np.pi * np.linspace(0, 1, num_taper_bins_lower_transition)))
 
         # Apply transition to positive frequencies
-        data[k_upper : k_trans_upper] *= upper_transition_window
-        data[k_trans_lower : k_lower] *= lower_transition_window[::-1]
+        modulated_spectrum[k_upper : k_trans_upper] *= upper_transition_window
+        modulated_spectrum[k_trans_lower : k_lower] *= lower_transition_window[::-1]
 
         # And mirrored spectrum ([::-1] reverse the transition window for the mirrored spectrum)
-        data[N - k_trans_upper : N - k_upper] *= upper_transition_window[::-1]
-        data[N - k_lower : N - k_trans_lower] *= lower_transition_window
+        modulated_spectrum[N - k_trans_upper : N - k_upper] *= upper_transition_window[::-1]
+        modulated_spectrum[N - k_lower : N - k_trans_lower] *= lower_transition_window
 
     if multiplier > 1:
 
@@ -78,14 +79,14 @@ def raised_cosine_filter(data, sample_rate, f_lower, f_upper, transition_window_
         lower_transition_window = 1 + (multiplier - 1) * (0.5 * (1 - np.cos(np.pi * np.linspace(0, 1, num_taper_bins_lower_transition)))) 
 
         # Apply transition to positive frequencies
-        data[k_upper : k_trans_upper] *= upper_transition_window[::-1]
-        data[k_trans_lower : k_lower] *= lower_transition_window
+        modulated_spectrum[k_upper : k_trans_upper] *= upper_transition_window[::-1]
+        modulated_spectrum[k_trans_lower : k_lower] *= lower_transition_window
 
         # And mirrored spectrum ([::-1] reverse the transition window for the mirrored spectrum)
-        data[N - k_trans_upper : N - k_upper] *= upper_transition_window
-        data[N - k_lower : N - k_trans_lower] *= lower_transition_window[::-1]
+        modulated_spectrum[N - k_trans_upper : N - k_upper] *= upper_transition_window
+        modulated_spectrum[N - k_lower : N - k_trans_lower] *= lower_transition_window[::-1]
 
-    return data
+    return modulated_spectrum
 
 
 # make sure you include the file name extension (.wav)
@@ -108,7 +109,6 @@ ap.plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, OU
 ap.plot_frequency_spectrum(frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT", True, True)
 
 # Apply a filtering window to remove specific frequencies from the audio signal
-filtered_complex_spectrum = complex_spectrum.copy()
 #these are the settings for the 5cm sample
 filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 20, 100, 20, 0)
 #filtered_complex_spectrum = raised_cosine_filter(complex_spectrum, sample_rate, 400, 800, 200, 2)
