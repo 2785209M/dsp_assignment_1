@@ -35,7 +35,7 @@ if __name__ == "__main__":
             filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 100, 20, 0)
 
             #Big Bottom Sidechain
-            filtered_complex_spectrum = ae.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 100, 200, 20, 2)
+            filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 100, 200, 20, 2)
         
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum, filtered_frequencies = ap.get_nyquist_spectrum(
