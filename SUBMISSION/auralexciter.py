@@ -31,16 +31,20 @@ if __name__ == "__main__":
             #clear up noise and sibilance before aural exciter
             filtered_complex_spectrum = ae.raised_cosine_filter(complex_spectrum, sample_rate, 20, 100, 20, 0)
 
-            # Big Bottom Sidechain
-            filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 100, 200, 20, 2)
-        
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum, filtered_frequencies = ap.get_nyquist_spectrum(filtered_complex_spectrum, sample_rate)
 
             # Revert the complex spectrum to time domain
             filtered_data = ae.calculate_ifft(filtered_complex_spectrum)
 
-            # 2. Aural Exciter Sidechain
+            # 2. Big Bottom Sidechain
+
+            # Boost 100-200 Hz (primary male human vocal range)
+            big_bottom_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 100, 200, 20, 2)
+
+            big_bottom_signal = ae.calculate_ifft(big_bottom_spectrum)
+
+            # 3. Aural Exciter Sidechain
 
             #extract 800-6000Hz
             upper_sidechain = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 2000, 20, 0)
@@ -66,17 +70,17 @@ if __name__ == "__main__":
 
             exciter_harmonics = ae.calculate_ifft(exciter_spectrum)
 
-            # 3. Mixing
+            # 4. Mixing
 
             #mixer gain scaled by some fraction of the original audio
-            mixer_gain_1 = 0.05
+            mixer_gain_1 = 0.1
 
-            final_audio = filtered_data + mixer_gain_1 * exciter_harmonics
+            final_audio = filtered_data + mixer_gain_1 * (exciter_harmonics + big_bottom_signal)
 
             final_spectrum = ap.calculate_fft(final_audio)
             nyquist_final_spectrum, final_freqs = ap.get_nyquist_spectrum(final_spectrum, sample_rate)
 
-            # 4. Plots and wav files
+            # 5. Plots and wav files
 
             # Plot Filtered Audio in Frequency Domain
             ap.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, OUTPUT_DIR, "FFT_exciter", True, True)
