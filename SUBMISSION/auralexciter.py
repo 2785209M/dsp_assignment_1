@@ -44,14 +44,14 @@ if __name__ == "__main__":
 
             #set high pass filter
             upper_sidechain = filtered_complex_spectrum.copy()
-            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 6000, 20, 0)
+            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 800, 20, 0)
 
             upper_sidechain_signal = ae.calculate_ifft(upper_sidechain)
 
             #scale upper sidechain to get nonlinearity from tanh
             upper_sidechain_signal /= np.max(np.abs(upper_sidechain_signal))
     
-            alpha = 2
+            alpha = 5
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
 
             #fft after nonlinearity applied
@@ -69,7 +69,7 @@ if __name__ == "__main__":
             # 3. Mixing
 
             #mixer gain scaled by some fraction of the original audio
-            mixer_gain_1 = 0.05
+            mixer_gain_1 = 0.03
 
             final_audio = filtered_data + mixer_gain_1 * exciter_harmonics
 
