@@ -35,7 +35,7 @@ if __name__ == "__main__":
             filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 100, 20, 0)
 
             #Big Bottom Sidechain
-            filtered_complex_spectrum = ae.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 100, 200, 20, 2)
+            filtered_complex_spectrum = ae.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 20, 190, 20, 2)
         
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum, filtered_frequencies = ap.get_nyquist_spectrum(
@@ -47,17 +47,16 @@ if __name__ == "__main__":
 
             # 2. Aural Exciter Sidechain
 
-            #extract 800-6000Hz
+            #set high pass filter
             upper_sidechain = filtered_complex_spectrum.copy()
-            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 2000, 20, 0)
-            #upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 2100, sample_rate/2 - 20, 20, 0)
+            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 800, 20, 0)
 
             upper_sidechain_signal = ae.calculate_ifft(upper_sidechain)
 
             #scale upper sidechain to get nonlinearity from tanh
             upper_sidechain_signal /= np.max(np.abs(upper_sidechain_signal))
     
-            alpha = 2
+            alpha = 3
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
 
             #fft after nonlinearity applied
