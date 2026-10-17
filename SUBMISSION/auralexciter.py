@@ -18,9 +18,7 @@ if __name__ == "__main__":
             
             # Calculate FFT and the positive-frequency spectrum used for plotting
             complex_spectrum = ap.calculate_fft(data)
-            nyquist_adjusted_spectrum, frequencies = ap.get_nyquist_spectrum(
-                complex_spectrum, sample_rate
-            )
+            nyquist_adjusted_spectrum, frequencies = ap.get_nyquist_spectrum(complex_spectrum, sample_rate)
 
             # Plot original Audio in Time Domain
             ap.plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
@@ -31,16 +29,13 @@ if __name__ == "__main__":
 
             # Apply a filtering window to remove specific frequencies from the audio signal
             #clear up noise and sibilance before aural exciter
-            filtered_complex_spectrum = complex_spectrum.copy()
-            filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 100, 20, 0)
+            filtered_complex_spectrum = ae.raised_cosine_filter(complex_spectrum, sample_rate, 20, 100, 20, 0)
 
             #Big Bottom Sidechain
             filtered_complex_spectrum = ae.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 20, 190, 20, 2)
         
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
-            filtered_nyquist_spectrum, filtered_frequencies = ap.get_nyquist_spectrum(
-                filtered_complex_spectrum, sample_rate
-            )
+            filtered_nyquist_spectrum, filtered_frequencies = ap.get_nyquist_spectrum(filtered_complex_spectrum, sample_rate)
 
             # Revert the complex spectrum to time domain
             filtered_data = ae.calculate_ifft(filtered_complex_spectrum)
@@ -67,13 +62,11 @@ if __name__ == "__main__":
             exciter_spectrum = ae.raised_cosine_filter(exciter_spectrum, sample_rate, 10000, sample_rate/2 - 200, 200, 0)
 
             #nyquist spectrum for plotting
-            nyquist_exciter_spectrum, exciter_freqs = ap.get_nyquist_spectrum(
-                exciter_spectrum, sample_rate
-            )
+            nyquist_exciter_spectrum, exciter_freqs = ap.get_nyquist_spectrum(exciter_spectrum, sample_rate)
 
             exciter_harmonics = ae.calculate_ifft(exciter_spectrum)
 
-            # 4. Mixing
+            # 3. Mixing
 
             #mixer gain scaled by some fraction of the original audio
             mixer_gain_1 = 0.05
@@ -81,11 +74,9 @@ if __name__ == "__main__":
             final_audio = filtered_data + mixer_gain_1 * exciter_harmonics
 
             final_spectrum = ap.calculate_fft(final_audio)
-            nyquist_final_spectrum, final_freqs = ap.get_nyquist_spectrum(
-                final_spectrum, sample_rate
-            )
+            nyquist_final_spectrum, final_freqs = ap.get_nyquist_spectrum(final_spectrum, sample_rate)
 
-            # 5. Plots and wav files
+            # 4. Plots and wav files
 
             # Plot Filtered Audio in Frequency Domain
             ap.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, OUTPUT_DIR, "FFT_exciter", True, True)
