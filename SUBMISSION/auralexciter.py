@@ -32,7 +32,7 @@ if __name__ == "__main__":
             filtered_complex_spectrum = ae.raised_cosine_filter(complex_spectrum, sample_rate, 20, 100, 20, 0)
 
             #Big Bottom Sidechain
-            filtered_complex_spectrum = ae.raised_cosine_boost(filtered_complex_spectrum, sample_rate, 20, 190, 20, 2)
+            filtered_complex_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 20, 190, 20, 1.5)
         
             # Obtain the nyquist adjusted filtered frequency spectrum for plotting
             filtered_nyquist_spectrum, filtered_frequencies = ap.get_nyquist_spectrum(filtered_complex_spectrum, sample_rate)
@@ -44,14 +44,14 @@ if __name__ == "__main__":
 
             #set high pass filter
             upper_sidechain = filtered_complex_spectrum.copy()
-            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 800, 20, 0)
+            upper_sidechain = ae.raised_cosine_filter(upper_sidechain, sample_rate, 20, 6000, 20, 0)
 
             upper_sidechain_signal = ae.calculate_ifft(upper_sidechain)
 
             #scale upper sidechain to get nonlinearity from tanh
             upper_sidechain_signal /= np.max(np.abs(upper_sidechain_signal))
     
-            alpha = 3
+            alpha = 2
             upper_sidechain_signal = np.tanh(alpha * upper_sidechain_signal)
 
             #fft after nonlinearity applied
