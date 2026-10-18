@@ -115,21 +115,24 @@ if __name__ == "__main__":
 
     # Resolve the input relative to this script so it works regardless of the
     # directory from which the script is launched.
-    file_path = Path(__file__).resolve().parent / "Welcome_1m.wav"
+    file_paths = ["original_speech_1m.wav", "original_speech_5cm.wav"]
+    
+    for file_path in file_paths:
+        if Path(file_path).exists():
 
-    sample_rate, data, time_array, file_name = read_wav_file(file_path)
-                
-    # Calculate FFT and the positive-frequency spectrum used for plotting
-    complex_spectrum = calculate_fft(data)
-    nyquist_adjusted_spectrum, nyquist_frequencies = get_nyquist_spectrum(
-        complex_spectrum, sample_rate
-    )
+            sample_rate, data, time_array, file_name = read_wav_file(file_path)
+                        
+            # Calculate FFT and the positive-frequency spectrum used for plotting
+            complex_spectrum = calculate_fft(data)
+            nyquist_adjusted_spectrum, nyquist_frequencies = get_nyquist_spectrum(
+                complex_spectrum, sample_rate
+            )
 
-    # Plot original Audio in Time Domain
-    plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
+            # Plot original Audio in Time Domain
+            plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
 
-    # Plot Original Audio in Frequency Domain
-    plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT")
-    plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT", True, True)
+            # Plot Original Audio in Frequency Domain
+            plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT")
+            plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT", True, True)
 
-    print(f"Successfully processed {file_path}")
+            print(f"Successfully processed {file_path}")
