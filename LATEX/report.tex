@@ -12,8 +12,8 @@
 \maketitle
 
 \section*{Part 1 Audio Plot}
-\includesvg[width = \textwidth]{FFT_log_Welcome_1m.svg}
-\includesvg[width = \textwidth]{FFT_log_Welcome_5cm.svg}
+\includesvg[width = \textwidth, pretex=\footnotesize]{FFT_log_Welcome_1m.svg}
+\includesvg[width = \textwidth, pretex=\footnotesize]{FFT_log_Welcome_5cm.svg}
 The fundamental frequency of the voice is identified in the plots with a range of 140-180Hz. The fundamental frequency lacks a distinct peak/is quite washed out due to the variety of vowel sounds in the spoken sentence. The second, third, and fourth harmonics are identified at their corresponding integer multiples of the fundamental frequency. Vowel sounds in speech are created from various mixtures of the fundamental frequency and these harmonics.\\\\
 The consonants are identified in the region of 800-10000Hz. Consonants are generated from higher frequency air bursts which do not have clear harmonics but rather look almost like noise due to the wider frequency distribution.\\\\
 The noise is identified in the region below the fundamental frequency of the voice. For the 5cm recording, the lower frequency noise is attributed to the popping sound caused by the air burst of plosives when the speaker is too close to the microphone. For the 1m recording, the pulse at 50Hz can easily be identified as mains hum, with the additional sharp spike at 100Hz being the second harmonic of the mains hum. A secondary region of noise is identified in both recordings above 10kHz, an area which the human voice rarely stretches into. The sharp roll off indicates that this noise will likely not have an audible impact on the quality of the recording.\\\\
@@ -32,7 +32,7 @@ For the 1m recording, the speech was improved by boosting the bass frequencies. 
 \newpage
 \section*{Part 3 Aural Exciter}
 
-The aural exciter has 2 sidechains that are used to excite the voice. The big bottom sidechain is just a linear amplification of bass frequencies, implemented the same way as in part 2. The aural exciter sidechain, on the other hand, uses a high pass filter followed by the tanh function to generate harmonics that are then added back to the original signal. The system therefore gives us the following variables to enhance the recording:\\\\
+The aural exciter has 2 sidechains that are used to excite the voice. The big bottom sidechain is just a linear amplification of bass frequencies, implemented the same way as in part 2. The aural exciter sidechain, on the other hand, uses a high pass filter followed by the tanh function to generate harmonics that are then added back to the original signal. The system therefore gives us the following variables to enhance the recording:\\
 
 \begin{center}
 \begin{tabular}{ | m{7cm}| m{10cm} | } 
@@ -70,10 +70,13 @@ The first iteration of the aural exciter used the following settings: \\
   \hline
 \end{tabular}
 \end{center}
+\includesvg[width = \textwidth, pretex=\footnotesize]{First_Iteration_Filtered_Audio_Welcome_5cm.svg}
+It can be seen via comparison that the first iteration lead to mainly amplification of the higher frequency range of sibilance. Audibly, this lead to an unpleasant hissing sound when an s is spoken.\\
+\includesvg[width = \textwidth, pretex=\footnotesize]{Second_Iteration_excited_audio_Welcome_5cm.svg}
 Our next iteration then involved decreasing Fc1 to 4000Hz to try and generate harmonics for more of the consonant range.\\\\
-\includesvg[width = \textwidth]{FFT_log_Welcome_1m.svg}
+\includesvg[width = \textwidth, pretex=\footnotesize]{Second_Iteration_excited_audio_Welcome_5cm.svg}
 This lead to a more complete amplification of the ‘s’ sound that was less hissy. However it left the recording feeling unbalanced due to the emphasis on the sibilance. As a result of this we lowered Fc1 down to 800Hz to try and generate harmonics across the full consonant range.\\\\
-\includesvg[width = \textwidth]{FFT_log_Welcome_5cm.svg}
+\includesvg[width = \textwidth, pretex=\footnotesize]{Third_Iteration_excited_audio_Welcome_5cm.svg}
 Amplification across the range of consonants can now be seen, making the audio feel more full. We also tried changing the desired harmonic range at this point however it also lead to an unbalanced feeling to the audio.\\\\
 The next variable that was tuned was alpha. It was initially increased to 5 to create more nonlinearity from tanh but despite not having a hugely visible impact on the time domain of the signal, it make the audio sound slightly unnatural and so an alpha value of 3 was settled on. This seemed to add a bit more warmth to the recording.\\\\
 Finally, we tweaked the mixer gain. An increase to 0.1 increased the effect that the generated harmonics had on the signal but this actually made the recording slightly unpleasant to the ear, potentially due to it reintroducing more of a sharpness to the sibilance. It was ultimately decided to tone down the mixer gain to 0.03 (3\%) to made the effects of the exciter more subtle to the ear.\\\\

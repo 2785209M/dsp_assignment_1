@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025/Debian) (preloaded format=pdflatex 2026.10.18)  18 OCT 2026 21:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025/Debian) (preloaded format=pdflatex 2026.10.18)  18 OCT 2026 23:30
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -424,11 +424,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 35--36
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 35--36
-
- []
-
-
 Underfull \hbox (badness 10000) in paragraph at lines 56--58
 
  []
@@ -438,80 +433,111 @@ Underfull \hbox (badness 10000) in paragraph at lines 56--58
 
  []
 
-Package svg Info: Last page of `./svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf' is 2 on input line 74.
-(./svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf_tex
-File: ./svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf Graphic file (type pdf)
-<use ./svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf, page 1>
-Package pdftex.def Info: ./svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf , page1 used on input line 56.
-(pdftex.def)             Requested size: 542.02501pt x 130.61607pt.
-File: ./svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf Graphic file (type pdf)
-<use ./svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf, page 2>
-Package pdftex.def Info: ./svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf , page2 used on input line 62.
-(pdftex.def)             Requested size: 542.02501pt x 130.61607pt.
+Package svg Info: Last page of `./svg-inkscape/First_Iteration_Filtered_Audio_Welcome_5cm_svg-tex.pdf' is 1 on input line 73.
+(./svg-inkscape/First_Iteration_Filtered_Audio_Welcome_5cm_svg-tex.pdf_tex
+<./svg-inkscape/First_Iteration_Filtered_Audio_Welcome_5cm_svg-tex.pdf, id=365, page=1, 1186.47882pt x 283.33745pt>
+File: ./svg-inkscape/First_Iteration_Filtered_Audio_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/First_Iteration_Filtered_Audio_Welcome_5cm_svg-tex.pdf, page 1>
+Package pdftex.def Info: ./svg-inkscape/First_Iteration_Filtered_Audio_Welcome_5cm_svg-tex.pdf , page1 used on input line 56.
+(pdftex.def)             Requested size: 542.02501pt x 129.44186pt.
 )
-Package svg Info: Last page of `./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf' is 3 on input line 76.
- (./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf_tex
-File: ./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
-<use ./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf, page 1>
-Package pdftex.def Info: ./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf , page1 used on input line 56.
-(pdftex.def)             Requested size: 542.02501pt x 130.61607pt.
-File: ./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
-<use ./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf, page 2>
-Package pdftex.def Info: ./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf , page2 used on input line 61.
-(pdftex.def)             Requested size: 542.02501pt x 130.61607pt.
-File: ./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
-<use ./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf, page 3>
-Package pdftex.def Info: ./svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf , page3 used on input line 63.
-(pdftex.def)             Requested size: 542.02501pt x 130.61607pt.
+Package svg Info: Last page of `./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf' is 2 on input line 75.
+ (./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf_tex
+<./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, id=367, page=1, 1186.47882pt x 283.33745pt>
+File: ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, page 1>
+Package pdftex.def Info: ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf , page1 used on input line 56.
+(pdftex.def)             Requested size: 542.02501pt x 129.44186pt.
+<./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, id=368, page=2, 1186.47882pt x 283.33745pt>
+File: ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, page 2>
+Package pdftex.def Info: ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf , page2 used on input line 58.
+(pdftex.def)             Requested size: 542.02501pt x 129.44186pt.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 73--81
+Package svg Info: Last page of `./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf' is 2 on input line 77.
+ (./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf_tex
+File: ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, page 1>
+Package pdftex.def Info: ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf , page1 used on input line 56.
+(pdftex.def)             Requested size: 542.02501pt x 129.44186pt.
+File: ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, page 2>
+Package pdftex.def Info: ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf , page2 used on input line 58.
+(pdftex.def)             Requested size: 542.02501pt x 129.44186pt.
+)
+Package svg Info: Last page of `./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf' is 2 on input line 79.
+ (./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf_tex
+<./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, id=371, page=1, 1186.47882pt x 283.33745pt>
+File: ./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, page 1>
+Package pdftex.def Info: ./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf , page1 used on input line 56.
+(pdftex.def)             Requested size: 542.02501pt x 129.44186pt.
+<./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, id=372, page=2, 1186.47882pt x 283.33745pt>
+File: ./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf Graphic file (type pdf)
+<use ./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf, page 2>
+Package pdftex.def Info: ./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf , page2 used on input line 58.
+(pdftex.def)             Requested size: 542.02501pt x 129.44186pt.
+)
+Underfull \hbox (badness 10000) in paragraph at lines 73--84
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--81
+Underfull \hbox (badness 10000) in paragraph at lines 73--84
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--81
+Underfull \hbox (badness 10000) in paragraph at lines 73--84
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--81
+Underfull \hbox (badness 10000) in paragraph at lines 73--84
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--81
+Underfull \hbox (badness 10000) in paragraph at lines 73--84
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 73--81
+Underfull \hbox (badness 10000) in paragraph at lines 73--84
 
  []
 
-[3] [4] (./report.aux)
+[3] [4 <./svg-inkscape/First_Iteration_Filtered_Audio_Welcome_5cm_svg-tex.pdf> <./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf
+
+pdfTeX warning: pdflatex (file ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf
+
+pdfTeX warning: pdflatex (file ./svg-inkscape/Second_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf
+
+pdfTeX warning: pdflatex (file ./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+> <./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf
+
+pdfTeX warning: pdflatex (file ./svg-inkscape/Third_Iteration_excited_audio_Welcome_5cm_svg-tex.pdf): PDF inclusion: multiple pdfs with page group included in a single page
+>] [5] (./report.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 5541 strings out of 469514
- 104040 string characters out of 5470071
- 547339 words of memory out of 5000000
- 34079 multiletter control sequences out of 15000+600000
- 634014 words of font info for 62 fonts, out of 8000000 for 9000
+ 5594 strings out of 469514
+ 108002 string characters out of 5470071
+ 546339 words of memory out of 5000000
+ 34125 multiletter control sequences out of 15000+600000
+ 634241 words of font info for 63 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 94i,14n,93p,783b,399s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on report.pdf (4 pages, 251597 bytes).
+ 94i,14n,93p,783b,435s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
+Output written on report.pdf (5 pages, 590321 bytes).
 PDF statistics:
- 385 PDF objects out of 1000 (max. 8388607)
- 249 compressed objects within 3 object streams
+ 540 PDF objects out of 1000 (max. 8388607)
+ 348 compressed objects within 4 object streams
  0 named destinations out of 1000 (max. 500000)
- 58 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 93 words of extra memory for PDF output out of 10000 (max. 10000000)
 
