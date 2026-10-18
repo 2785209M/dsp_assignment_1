@@ -1,82 +1,98 @@
-\documentclass{article}
-\usepackage[margin=0.5in, left=0.5in, right=0.5in]{geometry}
+\documentclass[12pt]{extarticle}
+\usepackage[margin=0.5in]{geometry}
 \usepackage{amsmath}
+\usepackage{array}
+\usepackage{svg}
 
 \title{Assignment 1 Report \\ Digital Signal Processing \\ Fourier Transform}
 \author{James Middleton (2785209M) \& Ewan Stewart (2664680S)}
-\date{\today}
+\date{}
 
 \begin{document}
 \maketitle
 
-\section*{Introduction}
-We have developed software to transform, filter, and modulate audio signals utilising Fourier transforms and the frequency domain.
+\section*{Part 1 Audio Plot}
+\includesvg[width = \textwidth]{FFT_log_Welcome_1m.svg}
+\includesvg[width = \textwidth]{FFT_log_Welcome_5cm.svg}
+The fundamental frequency of the voice is identified in the plots with a range of 140-180Hz. The fundamental frequency lacks a distinct peak/is quite washed out due to the variety of vowel sounds in the spoken sentence. The second, third, and fourth harmonics are identified at their corresponding integer multiples of the fundamental frequency. Vowel sounds in speech are created from various mixtures of the fundamental frequency and these harmonics.\\\\
+The consonants are identified in the region of 800-10000Hz. Consonants are generated from higher frequency air bursts which do not have clear harmonics but rather look almost like noise due to the wider frequency distribution.\\\\
+The noise is identified in the region below the fundamental frequency of the voice. For the 5cm recording, the lower frequency noise is attributed to the popping sound caused by the air burst of plosives when the speaker is too close to the microphone. For the 1m recording, the pulse at 50Hz can easily be identified as mains hum, with the additional sharp spike at 100Hz being the second harmonic of the mains hum. A secondary region of noise is identified in both recordings above 10kHz, an area which the human voice rarely stretches into. The sharp roll off indicates that this noise will likely not have an audible impact on the quality of the recording.\\\\
 
-\section{Audio Plot}
-Part 1 contains the logic for obtaining the frequency domain representation of our audio signal, involving reading the WAV file, normalizing the signal, performing a fast Fourier transform, and plotting the graphs in the time and frequency domains.
+\section*{Part 2 Audio Enhancement}
 
-\subsection{Read\_WAV\_file}
-Reads and normalizes the data to a range of [-1:1] (32-bit float). If a stereo input is given, only the first channel is stored. Automatically handles 8-bit unsigned, 16-bit signed, and 32-bit signed integer PCM.
-\begin{description}
-    \item[Inputs:]
-    \item[Outputs:] 
-\end{description}
+\subsection*{Noise Removal}
+For the 5cm recording, the noise that needs to be removed is in the range of 20-100Hz, it constitutes a large amount of the plosive pop sound in the recording. However, this pop sound bleeds into the frequency range of the fundamental frequency and it’s harmonics and so cannot be totally removed. Through testing it was found that the pop sound could be further dampened by filtering out even more of the lower end of the spectrum (100-200Hz) and relying on just the harmonics to constitute the vowel sounds in the time domain, however, this lead to the audio sounding quite tinny and still did not completely remove the pop. And so it was decided that the best compromise was to only filter out 20-100Hz.\\\\
+For the 1m recording, the noise that needs to be removed is the 50Hz mains noise as well as its second harmonic at 100Hz. This is easily achieved by filtering out the 20-100Hz region. \\\\
+An additional consideration that had to be made when filtering out the noise was Gibbs ringing. This is due to sharp edges in the frequency domain (such as that of a square filter) creating ringing artifacts in the time domain as a result of multiplication by a square filter in the frequency domain being the equivalent of convolution with the sinc function (IFFT of a square filter) in the time domain. The solution to this was to create a transition window either side of the region where the frequency amplitudes were manipulated. We used a raised cosine transition window to create a smooth curve rather than a sharp edge at either side of the manipulated region. \\\\
 
-\subsection{Plot\_time\_spectrum}
-Plots a time domain graph representing the audio signal (amplitude against time).
-\begin{description}
-    \item[Inputs:]
-    \item[Outputs:] 
-\end{description}
+\subsection{Improving the voice}
+For the 5cm recording, the speech could noticeably be improved with the removal of the pop sound. This is very difficult to achieve through DSP alone. The best way to improve the speech is therefore to prevent the creation of the pop sound at the time of recording. This is commonly achieved with a pop protector, which is a thin layer of fabric stretched between the mic and the speaker to dissipate the plosive air burst before it reaches the mic whilst still allowing for a loud and clear recording of the speech.\\\\
+For the 1m recording, the speech was improved by boosting the bass frequencies. Due to the discrimination of the human ear against bass frequencies, a 20dB loss in bass is perceived as more of a drop than a 20dB loss in the higher frequencies. The speech was therefore improved by amplifying the bass frequencies 120-300Hz. Again, a transition window was required to prevent Gibbs ringing artifacts in the time domain.\\\\
 
-\subsection{calculate\_fft}
-Takes a fast Fourier transform of the audio data, producing a full complex spectrum.
-\begin{description}
-    \item[Inputs:]
-    \item[Outputs:] 
-\end{description}
+\newpage
+\section*{Part 3 Aural Exciter}
 
-\subsection{get\_nyquist\_spectrum}
-Produces a Nyquist-adjusted frequency spectrum for plotting purposes.
-\begin{description}
-    \item[Inputs:]
-    \item[Outputs:] 
-\end{description}
+The aural exciter has 2 sidechains that are used to excite the voice. The big bottom sidechain is just a linear amplification of bass frequencies, implemented the same way as in part 2. The aural exciter sidechain, on the other hand, uses a high pass filter followed by the tanh function to generate harmonics that are then added back to the original signal. The system therefore gives us the following variables to enhance the recording:\\\\
 
-\subsection{plot\_frequency\_spectrum}
-Plots a frequency domain \.svg plot in the specified output folder, with optional logarithmic scaling.
-\begin{description}
-    \item[Inputs:]
-    \item[Outputs:] 
-\end{description}
+\begin{center}
+\begin{tabular}{ | m{7cm}| m{10cm} | } 
+  \hline
+  \textbf{Variable} & \textbf{Description} \\\\ 
+  \hline
+  Fc1 – aural exciter cut off frequency & The cut off frequency of the high pass filter \\\\ 
+  \hline
+  Alpha & The amplification of the filtered signal before being passed through tanh. Higher amplification means more nonlinearity from the tanh function \\\\ 
+  \hline
+  Desired Harmonics & The frequency band of generated harmonics that are mixed back into the original signal \\\\
+  \hline
+  Mixer gain & The gain factor of the desired harmonics as they are mixed with the original signal \\\\
+  \hline
+  Fc2 – bottom sidechain cut off frequency & The cut of frequency of the low pass filter \\\\
+  \hline
+  Beta & Amplification of the bottom sidechain \\\\
+  \hline
+\end{tabular}
+\end{center}
+Fc2 and Beta were trivial to tune; Fc2 was to be set in the range of 50-190Hz. The region of 20-100Hz had already been filtered out to reduce the pop sound and so Fc2 was set to 190Hz to amplify the fundamental frequency of the voice. Beta was set to 1.5 to amplify the bass. Any further amplification lead to the bass in the voice sounding distorted and the introduction of noise/hum in the background of the signal.\\\\
+The first iteration of the aural exciter used the following settings: \\\\
+\begin{center}
+\begin{tabular}{ | m{7cm}| m{10cm} | } 
+  \hline
+  \textbf{Variable} & \textbf{Description} \\\\ 
+  \hline
+  Fc1 & 6000Hz\\\\ 
+  \hline
+  Alpha & 2 \\\\ 
+  \hline
+  Desired Harmonic range & 1000-10000Hz (with 200Hz transition window) \\\\
+  \hline
+  Mixer gain & 0.05 (5\%)\\
+  \hline
+\end{tabular}
+\end{center}
+Our next iteration then involved decreasing Fc1 to 4000Hz to try and generate harmonics for more of the consonant range.\\\\
+\includesvg[width = \textwidth]{FFT_log_Welcome_1m.svg}
+This lead to a more complete amplification of the ‘s’ sound that was less hissy. However it left the recording feeling unbalanced due to the emphasis on the sibilance. As a result of this we lowered Fc1 down to 800Hz to try and generate harmonics across the full consonant range.\\\\
+\includesvg[width = \textwidth]{FFT_log_Welcome_5cm.svg}
+Amplification across the range of consonants can now be seen, making the audio feel more full. We also tried changing the desired harmonic range at this point however it also lead to an unbalanced feeling to the audio.\\\\
+The next variable that was tuned was alpha. It was initially increased to 5 to create more nonlinearity from tanh but despite not having a hugely visible impact on the time domain of the signal, it make the audio sound slightly unnatural and so an alpha value of 3 was settled on. This seemed to add a bit more warmth to the recording.\\\\
+Finally, we tweaked the mixer gain. An increase to 0.1 increased the effect that the generated harmonics had on the signal but this actually made the recording slightly unpleasant to the ear, potentially due to it reintroducing more of a sharpness to the sibilance. It was ultimately decided to tone down the mixer gain to 0.03 (3\%) to made the effects of the exciter more subtle to the ear.\\\\
+The final settings for the aural exciter then be seen below:\\\\
 
-
-\section{Audio Enhancer}
-Frequency filtering and amplification.
-
-\subsection{generate\_wav\_file}
-Generates a WAV file, designed to process frequency-modulated audio data.
-\begin{description}
-    \item[Inputs:]
-    \item[Outputs:] 
-\end{description}
-
-\subsection{calculate\_ifft}
-Performs an inverse Fourier transform on the input complex spectrum to produce a reconstructed time-domain data array.
-\begin{description}
-    \item[Inputs:]
-    \item[Outputs:] 
-\end{description}
-
-\subsection{raised\_cosine\_filter}
-Uses a cosine smoothing method to modulate/remove specific frequency ranges without producing ringing from Gibb's phenomenon.
-\begin{description}
-    \item[Inputs:]
-    \item[Outputs:] 
-\end{description}
-
-
-\section{Part 3 \- Aural Exciter}
-Utilizes the functions from the previous two parts of the assignment to digitally recreate an aural exciter circuit as given in the specification. An inverse tan function is applied to a high-pass filtered portion of the input signal to introduce non-linear harmonic distortion. These newly generated high-frequency harmonics are then scaled and mixed back with the original dry audio, enhancing the signal's brightness and presence.
+\begin{center}
+\begin{tabular}{ | m{7cm}| m{10cm} | } 
+  \hline
+  \textbf{Variable} & \textbf{Description} \\\\ 
+  \hline
+  Fc1 & 800Hz\\\\ 
+  \hline
+  Alpha & 3 \\\\ 
+  \hline
+  Desired Harmonic range & 1000-10000Hz (with 200Hz transition window) \\\\
+  \hline
+  Mixer gain & 0.03 (3\%)\\
+  \hline
+\end{tabular}
+\end{center}
 
 \end{document}
