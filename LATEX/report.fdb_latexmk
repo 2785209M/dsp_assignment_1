@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1792355830.08373 "/home/james/DSP/dsp_assignment_1/LATEX/report.tex" "report.pdf" "report" 1792355830.33942 0
+["pdflatex"] 1792355983.71505 "/home/james/DSP/dsp_assignment_1/LATEX/report.tex" "report.pdf" "report" 1792355983.96788 0
   "/etc/texmf/web2c/texmf.cnf" 1790687445.17386 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/james/DSP/dsp_assignment_1/LATEX/report.tex" 1792355829.62691 8449 f8bb83ba29f0721f665c4d098dcc2fdb ""
+  "/home/james/DSP/dsp_assignment_1/LATEX/report.tex" 1792355983.27474 8446 e578e00d1ca4dedd5713a195dbd266c9 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -78,8 +78,8 @@
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1792354803 2236302 367db42b8977bbe0db424bb6945f8cd8 ""
   "FFT_log_Welcome_1m.svg" 1792354051.77688 339172 a47653df59a3a13e701f18163e24d06e ""
   "FFT_log_Welcome_5cm.svg" 1792354051.93788 330929 92dff6b41dc4a4aa7fdd734c84048e4c ""
-  "report.aux" 1792355830.30213 233 80d54ac433ecb3b9e9230104b67edc1f "pdflatex"
-  "report.tex" 1792355829.62691 8449 f8bb83ba29f0721f665c4d098dcc2fdb ""
+  "report.aux" 1792355983.93075 121 00efb854214d41391d975529750e3890 "pdflatex"
+  "report.tex" 1792355983.27474 8446 e578e00d1ca4dedd5713a195dbd266c9 ""
   "svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf" 1792354973.50549 106791 e65179ae98a8ba2ccf0d20198c21aa3e ""
   "svg-inkscape/FFT_log_Welcome_1m_svg-tex.pdf_tex" 1792354973.50675 2947 c9c7ef4d5a5611cc2ad9545d139de734 ""
   "svg-inkscape/FFT_log_Welcome_5cm_svg-tex.pdf" 1792354973.9565 106560 7e90faf3c4ce3a6e656695f835fffe0b ""

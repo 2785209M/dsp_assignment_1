@@ -25,7 +25,7 @@ For the 5cm recording, the noise that needs to be removed is in the range of 20-
 For the 1m recording, the noise that needs to be removed is the 50Hz mains noise as well as its second harmonic at 100Hz. This is easily achieved by filtering out the 20-100Hz region. \\\\
 An additional consideration that had to be made when filtering out the noise was Gibbs ringing. This is due to sharp edges in the frequency domain (such as that of a square filter) creating ringing artifacts in the time domain as a result of multiplication by a square filter in the frequency domain being the equivalent of convolution with the sinc function (IFFT of a square filter) in the time domain. The solution to this was to create a transition window either side of the region where the frequency amplitudes were manipulated. We used a raised cosine transition window to create a smooth curve rather than a sharp edge at either side of the manipulated region. \\\\
 
-\subsection{Improving the voice}
+\subsection*{Improving the voice}
 For the 5cm recording, the speech could noticeably be improved with the removal of the pop sound. This is very difficult to achieve through DSP alone. The best way to improve the speech is therefore to prevent the creation of the pop sound at the time of recording. This is commonly achieved with a pop protector, which is a thin layer of fabric stretched between the mic and the speaker to dissipate the plosive air burst before it reaches the mic whilst still allowing for a loud and clear recording of the speech.\\\\
 For the 1m recording, the speech was improved by boosting the bass frequencies. Due to the discrimination of the human ear against bass frequencies, a 20dB loss in bass is perceived as more of a drop than a 20dB loss in the higher frequencies. The speech was therefore improved by amplifying the bass frequencies 120-300Hz. Again, a transition window was required to prevent Gibbs ringing artifacts in the time domain.\\\\
 
@@ -54,7 +54,7 @@ The aural exciter has 2 sidechains that are used to excite the voice. The big bo
 \end{tabular}
 \end{center}
 Fc2 and Beta were trivial to tune; Fc2 was to be set in the range of 50-190Hz. The region of 20-100Hz had already been filtered out to reduce the pop sound and so Fc2 was set to 190Hz to amplify the fundamental frequency of the voice. Beta was set to 1.5 to amplify the bass. Any further amplification lead to the bass in the voice sounding distorted and the introduction of noise/hum in the background of the signal.\\\\
-The first iteration of the aural exciter used the following settings: \\\\
+The first iteration of the aural exciter used the following settings: \\
 \begin{center}
 \begin{tabular}{ | m{7cm}| m{10cm} | } 
   \hline
@@ -77,7 +77,7 @@ This lead to a more complete amplification of the ‘s’ sound that was less hi
 Amplification across the range of consonants can now be seen, making the audio feel more full. We also tried changing the desired harmonic range at this point however it also lead to an unbalanced feeling to the audio.\\\\
 The next variable that was tuned was alpha. It was initially increased to 5 to create more nonlinearity from tanh but despite not having a hugely visible impact on the time domain of the signal, it make the audio sound slightly unnatural and so an alpha value of 3 was settled on. This seemed to add a bit more warmth to the recording.\\\\
 Finally, we tweaked the mixer gain. An increase to 0.1 increased the effect that the generated harmonics had on the signal but this actually made the recording slightly unpleasant to the ear, potentially due to it reintroducing more of a sharpness to the sibilance. It was ultimately decided to tone down the mixer gain to 0.03 (3\%) to made the effects of the exciter more subtle to the ear.\\\\
-The final settings for the aural exciter then be seen below:\\\\
+The final settings for the aural exciter then be seen below:\\
 
 \begin{center}
 \begin{tabular}{ | m{7cm}| m{10cm} | } 

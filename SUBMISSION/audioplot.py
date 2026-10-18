@@ -3,11 +3,6 @@ from pathlib import Path
 from scipy.io import wavfile
 import numpy as np
 
-# put the audio files you want to process into the "audio_files" directory
-# The output will appear in the "images" directory
-OUTPUT_DIR = Path("2785209M-2664680S/part_1")
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-
 def read_wav_file(file):
     # extract the sample rate in Hz and data array from the wav file
     sample_rate, data = wavfile.read(file)
@@ -111,24 +106,30 @@ def plot_frequency_spectrum(frequencies, spectrum, original_file_name, output_di
     plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
     plt.close()
 
+if __name__ == "__main__":
 
-# Resolve the input relative to this script so it works regardless of the
-# directory from which the script is launched.
-file_path = Path(__file__).resolve().parent / "Welcome_1m.wav"
+    # put the audio files you want to process into the "audio_files" directory
+    # The output will appear in the "images" directory
+    OUTPUT_DIR = Path("2785209M-2664680S/part_1")
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    
+    # Resolve the input relative to this script so it works regardless of the
+    # directory from which the script is launched.
+    file_path = Path(__file__).resolve().parent / "Welcome_1m.wav"
 
-sample_rate, data, time_array, file_name = read_wav_file(file_path)
-            
-# Calculate FFT and the positive-frequency spectrum used for plotting
-complex_spectrum = calculate_fft(data)
-nyquist_adjusted_spectrum, nyquist_frequencies = get_nyquist_spectrum(
-    complex_spectrum, sample_rate
-)
+    sample_rate, data, time_array, file_name = read_wav_file(file_path)
+                
+    # Calculate FFT and the positive-frequency spectrum used for plotting
+    complex_spectrum = calculate_fft(data)
+    nyquist_adjusted_spectrum, nyquist_frequencies = get_nyquist_spectrum(
+        complex_spectrum, sample_rate
+    )
 
-# Plot original Audio in Time Domain
-plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
+    # Plot original Audio in Time Domain
+    plot_time_spectrum(time_array, data, file_name, OUTPUT_DIR, "Original_Audio")
 
-# Plot Original Audio in Frequency Domain
-plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT")
-plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT", True, True)
+    # Plot Original Audio in Frequency Domain
+    plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT")
+    plot_frequency_spectrum(nyquist_frequencies, nyquist_adjusted_spectrum, file_name, OUTPUT_DIR, "FFT", True, True)
 
-print(f"Successfully processed {file_path}")
+    print(f"Successfully processed {file_path}")
