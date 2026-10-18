@@ -110,9 +110,9 @@ if __name__ == "__main__":
 
     # put the audio files you want to process into the "audio_files" directory
     # The output will appear in the "images" directory
-    OUTPUT_DIR = Path("2785209M-2664680S/part_1")
+    OUTPUT_DIR = Path("OUTPUT/part_1")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    
+
     # Resolve the input relative to this script so it works regardless of the
     # directory from which the script is launched.
     file_path = Path(__file__).resolve().parent / "Welcome_1m.wav"

@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
     # put the audio files you want to process into the "audio_files" directory
     # The output will appear in the "OUTPUT" directory
-    OUTPUT_DIR = Path("2785209M-2664680S/part_2")
+    OUTPUT_DIR = Path("OUTPUT/part_2")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
     # make sure you include the file name extension (.wav)

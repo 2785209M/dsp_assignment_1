@@ -7,7 +7,7 @@ OUTPUT_DIR = Path("OUTPUT/part_3")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 if __name__ == "__main__":
-    file_paths = ["Welcome_1m.wav", "Welcome_5cm.wav"]
+    file_paths = ["original_speech_1m.wav", "original_speech_5cm.wav"]
 
     for file_path in file_paths:
         if Path(file_path).exists():
@@ -81,16 +81,16 @@ if __name__ == "__main__":
             # Plot Filtered Audio in Frequency Domain
             ap.plot_frequency_spectrum(exciter_freqs, nyquist_exciter_spectrum, file_name, OUTPUT_DIR, "FFT_exciter", True, True)
             ap.plot_frequency_spectrum(frequencies, filtered_nyquist_spectrum, file_name, OUTPUT_DIR, "IFFT", True, True)
-            ap.plot_frequency_spectrum(final_freqs, nyquist_final_spectrum, file_name, OUTPUT_DIR, "FFT_final", True, True)
+            ap.plot_frequency_spectrum(final_freqs, nyquist_final_spectrum, file_name, OUTPUT_DIR, "FFT_enhanced", True, True)
             
             # Plot Filtered Audio in Time Domain
-            ap.plot_time_spectrum(time_array, exciter_harmonics, file_name, OUTPUT_DIR, "exciter_harmonics")
+            ap.plot_time_spectrum(time_array, exciter_harmonics, file_name, OUTPUT_DIR, "enhanced_harmonics")
             ap.plot_time_spectrum(time_array, filtered_data, file_name, OUTPUT_DIR, "Filtered_Audio")
-            ap.plot_time_spectrum(time_array, final_audio, file_name, OUTPUT_DIR,"excited_audio")
+            ap.plot_time_spectrum(time_array, final_audio, file_name, OUTPUT_DIR,"enhanced_audio")
 
             # Generate wav files
-            ae.generate_wav_file(final_audio, sample_rate, file_name, OUTPUT_DIR, "Final_Audio")
-            ae.generate_wav_file(filtered_data, sample_rate, file_name, OUTPUT_DIR, "Filtered_Audio")
+            ae.generate_wav_file(final_audio, sample_rate, file_name, OUTPUT_DIR, "enhanced")
+            ae.generate_wav_file(filtered_data, sample_rate, file_name, OUTPUT_DIR, "filtered")
 
             print(f"Successfully processed {file_path}")
 
