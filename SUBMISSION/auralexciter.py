@@ -40,7 +40,10 @@ if __name__ == "__main__":
             # 2. Big Bottom Sidechain
 
             # Boost 100-200 Hz (primary male human vocal range)
-            big_bottom_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 100, 200, 20, 2)
+            big_bottom_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 0, 99, 20, 0)
+            big_bottom_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 200, sample_rate/2, 20, 0)
+            big_bottom_spectrum = ae.raised_cosine_filter(filtered_complex_spectrum, sample_rate, 100, 200, 20, 3)
+                        
 
             big_bottom_signal = ae.calculate_ifft(big_bottom_spectrum)
 
