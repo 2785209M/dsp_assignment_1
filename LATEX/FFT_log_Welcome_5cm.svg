@@ -26,8 +26,8 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="pt"
      inkscape:zoom="1.1572543"
-     inkscape:cx="1153.5926"
-     inkscape:cy="225.96589"
+     inkscape:cx="780.72729"
+     inkscape:cy="231.15058"
      inkscape:window-width="1920"
      inkscape:window-height="1111"
      inkscape:window-x="-9"
@@ -108,8 +108,8 @@
     <rect
        x="692.89789"
        y="122.20421"
-       width="287.79093"
-       height="47.04862"
+       width="282.60624"
+       height="56.553878"
        id="rect156-9" />
     <rect
        x="692.89789"
@@ -2169,20 +2169,20 @@
      rx="74.848289"
      ry="28.563448" />
   <ellipse
-     style="fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:1.50621413;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:1.5113687;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
      id="path153-23"
-     cx="982.77063"
-     cy="-619.65448"
-     rx="74.062866"
-     ry="29.145117"
-     transform="matrix(0.74323401,0.66903154,-0.56833983,0.82279392,0,0)" />
+     cx="1010.5329"
+     cy="-646.6405"
+     rx="64.695145"
+     ry="25.731216"
+     transform="matrix(0.72746204,0.68614792,-0.55038872,0.83490853,0,0)" />
   <ellipse
-     style="fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:1.7461;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:1.81349;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
      id="path153-5"
-     cx="922.59546"
+     cx="932.96478"
      cy="95.579422"
-     rx="105.79592"
-     ry="56.590752" />
+     rx="114.18734"
+     ry="56.557056" />
   <ellipse
      style="fill:none;fill-opacity:1;stroke:#ff0000;stroke-width:1.50050914;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
      id="path153-2"
@@ -2222,7 +2222,7 @@
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect156);display:inline;fill:#000000;fill-opacity:1;stroke:#ff0000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"><tspan
        x="692.89844"
        y="141.66809"
-       id="tspan3">Noise</tspan></text>
+       id="tspan1">Noise</tspan></text>
   <text
      xml:space="preserve"
      transform="matrix(0.75,0,0,0.75,510.36392,98.413676)"
@@ -2230,7 +2230,7 @@
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect156-2);display:inline;fill:#000000;fill-opacity:1;stroke:#ff0000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"><tspan
        x="692.89844"
        y="141.66809"
-       id="tspan4">Noise</tspan></text>
+       id="tspan2">Noise</tspan></text>
   <text
      xml:space="preserve"
      transform="matrix(0.75,0,0,0.75,-19.17878,59.287648)"
@@ -2238,29 +2238,19 @@
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect156-9);display:inline;fill:#000000;fill-opacity:1;stroke:#ff0000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"><tspan
        x="692.89844"
        y="141.66809"
-       id="tspan7">Fundamental Frequency
-</tspan><tspan
-       x="692.89844"
-       y="188.71497"
-       id="tspan9"><tspan
-         dx="0 12.260397 9.1041527"
-         id="tspan8">Fre</tspan></tspan></text>
+       id="tspan3">Fundamental Frequency</tspan></text>
   <text
      xml:space="preserve"
-     transform="matrix(0.75,0,0,0.75,236.46516,-5.4991897)"
+     transform="matrix(0.75,0,0,0.75,246.18645,14.591468)"
      id="text158"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.5412px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect159);display:inline;fill:#000000;fill-opacity:1;stroke:#ff0000;stroke-width:0;stroke-dasharray:none;stroke-opacity:1"><tspan
        x="844.43164"
        y="234.73277"
-       id="tspan10">Consonants</tspan></text>
+       id="tspan4">Consonants</tspan></text>
   <path
      style="fill:#000000;stroke:#ff0000;stroke-width:1.5;stroke-dasharray:none"
      d="M 562.75041,101.83643 V 81.92816 Z"
      id="path4" />
-  <path
-     style="fill:#000000;stroke:#ff0000;stroke-width:1.65144;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none"
-     d="M 1057.9234,188.78875 V 164.65758 Z"
-     id="path4-6" />
   <text
      xml:space="preserve"
      transform="scale(0.75)"
@@ -2277,11 +2267,11 @@
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.3333px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect156-7-2);display:inline;fill:#000000;fill-opacity:1;stroke:#ff0000;stroke-width:0;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"><tspan
        x="692.89844"
        y="141.66809"
-       id="tspan11">1st, 2nd, 3rd
+       id="tspan5">2nd, 3rd, 4th
 </tspan><tspan
        x="692.89844"
        y="168.33472"
-       id="tspan12">  Harmonics</tspan></text>
+       id="tspan6">  Harmonics</tspan></text>
   <path
      style="fill:#000000;stroke:#ff0000;stroke-width:1.5;stroke-dasharray:none"
      d="M 696.04406,108.23032 715.48663,55.087286 Z"
@@ -2294,4 +2284,12 @@
      style="fill:#000000;stroke:#ff0000;stroke-width:1.5;stroke-dasharray:none"
      d="M 775.7586,110.49862 789.3684,59.947929 Z"
      id="path9" />
+  <path
+     style="fill:#000000;stroke:#ff0000;stroke-width:1.5;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none"
+     d="m 1050.477,190.92488 13.5721,-28.35549 z"
+     id="path9-4" />
+  <path
+     style="fill:#000000;stroke:#ff0000;stroke-width:1.5;stroke-dasharray:none"
+     d="m 933.2583,174.73202 c 0,-47.67191 0,0 0,0 z"
+     id="path11" />
 </svg>
