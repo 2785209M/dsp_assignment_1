@@ -30,22 +30,6 @@ def read_wav_file(file):
 
     return sample_rate, data, time_array, file_name
 
-def plot_time_spectrum(time, data, original_file_name, output_directory, title='time_spectrum'):
-    plt.figure(figsize=(20, 4))
-    plt.plot(time, data)
-
-    plt.title(f"{title}_{original_file_name}")
-    plt.xlabel('Time (s)')
-    plt.ylabel('Amplitude')
-    plt.grid(True, which='both', linestyle='-', linewidth=0.5)
-
-    output_name = f"{title}_{original_file_name}"
-    output_dir = output_directory / original_file_name / "time_domain"
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
-    plt.close()
-
 
 def calculate_fft(data):
     # Compute full complex FFT first (needed for a proper IFFT later)
@@ -67,6 +51,23 @@ def get_nyquist_spectrum(complex_spectrum, sample_rate):
     nyquist_frequencies = np.arange(0, N // 2) * frequency_resolution
 
     return nyquist_spectrum, nyquist_frequencies
+
+
+def plot_time_spectrum(time, data, original_file_name, output_directory, title='time_spectrum'):
+    plt.figure(figsize=(20, 4))
+    plt.plot(time, data)
+
+    plt.title(f"{title}_{original_file_name}")
+    plt.xlabel('Time (s)')
+    plt.ylabel('Amplitude')
+    plt.grid(True, which='both', linestyle='-', linewidth=0.5)
+
+    output_name = f"{title}_{original_file_name}"
+    output_dir = output_directory / original_file_name / "time_domain"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    plt.savefig(output_dir / f"{output_name}.svg", dpi=300, bbox_inches="tight")
+    plt.close()
 
 
 def plot_frequency_spectrum(frequencies, spectrum, original_file_name, output_directory, title="",log=False, dB=False):
